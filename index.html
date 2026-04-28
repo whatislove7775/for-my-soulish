@@ -35,143 +35,110 @@
         h1 { font-family: 'Caveat', cursive; font-size: 3.5rem; color: #ff4d6d; margin-bottom: 10px; }
         .subtitle { font-size: 1.2rem; color: #888; margin-bottom: 40px; }
 
-        /* --- СТОПКА НАСТОЯЩИХ ЧЕКОВ --- */
+        /* --- СТОПКА НАСТОЯЩИХ ЧЕКОВ И БАННЕРОВ --- */
         .receipt-stack {
             display: flex; flex-direction: column; align-items: center;
             margin-top: 80px; margin-bottom: 100px;
         }
 
-        .poem-receipt {
-            background: #fff;
-            width: 320px;
-            padding: 30px 20px;
-            position: relative;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
-            margin-top: -120px; /* Наложение друг на друга */
-            transition: all 0.4s ease;
-            z-index: 1;
-            color: #222;
-            font-family: 'Courier New', Courier, monospace; /* Кассовый шрифт */
-            font-weight: bold;
+        /* Умная система наложения: чеки и баннеры накладываются друг на друга */
+        .poem-receipt, .banner { margin-top: 0; transition: all 0.4s ease; }
+        .poem-receipt + .poem-receipt { margin-top: -120px; }
+        .poem-receipt + .banner, .banner + .poem-receipt, .banner + .banner { margin-top: -40px; }
+
+        /* ПРИ НАВЕДЕНИИ НА СТОПКУ: всё разъезжается */
+        .receipt-stack:hover .poem-receipt,
+        .receipt-stack:hover .banner {
+            margin-top: 30px; transform: rotate(0deg);
         }
 
-        /* Зубчатый край сверху */
+        .poem-receipt {
+            background: #fff; width: 320px; padding: 30px 20px; position: relative;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2)); z-index: 1; color: #222;
+            font-family: 'Courier New', Courier, monospace; font-weight: bold;
+        }
+
+        /* Зубчатый край сверху и снизу */
         .poem-receipt::before {
             content: ""; position: absolute; top: -8px; left: 0; right: 0; height: 8px;
             background-image: radial-gradient(circle at 5px 0, transparent 6px, #fff 6px);
             background-size: 10px 8px; background-repeat: repeat-x;
         }
-
-        /* Зубчатый край снизу */
         .poem-receipt::after {
             content: ""; position: absolute; bottom: -8px; left: 0; right: 0; height: 8px;
             background-image: radial-gradient(circle at 5px 8px, transparent 6px, #fff 6px);
             background-size: 10px 8px; background-repeat: repeat-x;
         }
 
-        /* Эффект небрежной стопки (чеки) */
+        /* Эффект небрежной стопки */
         .poem-receipt:nth-child(even) { transform: rotate(3deg); }
         .poem-receipt:nth-child(odd) { transform: rotate(-2deg); }
         .poem-receipt:nth-child(3n) { transform: rotate(1deg); }
 
-        /* ПРИ НАВЕДЕНИИ: чеки и баннеры выстраиваются в ряд и вытягиваются */
-        .receipt-stack:hover .poem-receipt,
-        .receipt-stack:hover .mobile-banner {
-            margin-top: 30px; transform: rotate(0deg);
+        .receipt-stack:hover .poem-receipt:hover {
+            z-index: 10; transform: scale(1.08) translateY(-10px); filter: drop-shadow(0 15px 30px rgba(0,0,0,0.3));
         }
 
-        /* ПРИ НАВЕДЕНИИ НА КОНКРЕТНЫЙ ЧЕК */
-        .receipt-stack:hover .poem-receipt:hover,
-        .receipt-stack:hover .mobile-banner:hover {
-            z-index: 10; transform: scale(1.08) translateY(-10px);
-            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.3));
-        }
-
-        /* Внутренности чека */
         .receipt-logo { font-size: 1.4rem; margin-bottom: 10px; text-transform: uppercase; text-align: center; }
         .receipt-info { text-align: left; font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px; }
         .dashed-line { border-bottom: 2px dashed #222; margin: 15px 0; }
-        
         .poem-receipt h3 { font-size: 1.2rem; margin: 0; text-transform: uppercase; text-align: center; }
         .poem-receipt p.poem-text { font-size: 1rem; text-align: left; white-space: pre-line; margin-top: 15px; }
         .receipt-total { text-align: right; font-size: 1.1rem; margin-top: 15px; text-transform: uppercase; }
         
-        /* Генерация реалистичного штрихкода */
         .barcode {
             height: 40px; width: 90%; margin: 20px auto 0;
             background: repeating-linear-gradient(90deg, #222, #222 2px, transparent 2px, transparent 4px, #222 4px, #222 5px, transparent 5px, transparent 8px, #222 8px, #222 12px, transparent 12px, transparent 14px);
         }
 
-        /* --- ИСПРАВЛЕННАЯ ЛОГИКА БАННЕРОВ --- */
+        /* --- ВСТРОЕННЫЕ РЕКЛАМНЫЕ БАННЕРЫ --- */
         .banner {
-            pointer-events: auto; background: #fff;
-            border: 2px dashed #ffb3c1; border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.2); 
-            padding: 10px; box-sizing: border-box;
+            pointer-events: auto; background: #fff9fa;
+            border: 2px dashed #ffb3c1; border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.2); padding: 10px; box-sizing: border-box;
             position: relative; animation: popIn 0.5s ease-out; text-align: center;
-            display: flex; flex-direction: column; z-index: 50;
-            /* Убрана фиксированная высота, теперь она auto по умолчанию */
-            height: auto !important; 
+            display: flex; flex-direction: column; z-index: 2;
         }
+        .banner:nth-child(odd) { transform: rotate(-3deg); }
+        .banner:nth-child(even) { transform: rotate(2deg); }
+        .receipt-stack:hover .banner:hover {
+            z-index: 10; transform: scale(1.05) translateY(-5px);
+        }
+
+        /* Разные формы для имитации настоящей рекламы */
+        .banner-landscape { width: 340px; height: 200px; }
+        .banner-square { width: 260px; height: 260px; }
+        .banner-portrait { width: 220px; height: 320px; }
+
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
+        .banner img { width: 100%; flex-grow: 1; object-fit: cover; border-radius: 8px; margin-bottom: 8px; }
         
-        /* Фотография идеально вписывается и сохраняет пропорцию */
-        .banner img { 
-            width: 100% !important; 
-            /* Фиксируем пропорцию фото, чтобы оно не искажалось и занимало предсказуемое место */
-            aspect-ratio: 4 / 3; 
-            object-fit: cover; 
-            border-radius: 10px; 
-            margin-bottom: 8px; 
-            pointer-events: none; 
-            /* Убрана фиксированная высота, зависит от aspect-ratio и ширины */
-            height: auto !important; 
-        }
-        
-        /* Кнопки на баннерах */
+        /* Кнопка закрытия (крестик) */
         .banner .btn-close {
-            position: absolute; top: -10px; right: -10px; width: 28px; height: 28px;
+            position: absolute; top: -10px; right: -10px; width: 24px; height: 24px;
             background: #ff4d6d; color: white; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 16px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 5;
+            font-size: 14px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 5;
         }
+        /* ИСПРАВЛЕННАЯ КНОПКА ИНФОРМАЦИИ (три точки) - КРУГЛАЯ */
         .banner .btn-info {
-            position: absolute; top: -10px; right: 25px; width: 28px; height: 28px;
-            background: white; color: #ff4d6d; border: 2px solid #ff4d6d; border-radius: 50%;
+            position: absolute; top: -10px; right: 20px; 
+            width: 32px; height: 32px; /* Увеличено для баланса */
+            background: #fff; color: #ff4d6d; border: 2px solid #ff4d6d; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            /* Исправлено отображение точек: горизонтально в ряд */
-            font-size: 20px; font-weight: 900; 
+            font-size: 24px; font-weight: 900; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 5;
+            font-family: Arial, sans-serif; /* Четкий шрифт для точек */
             letter-spacing: -2px; /* Сближаем точки */
-            padding-bottom: 4px; /* Корректируем центр */
-            font-family: Arial, sans-serif;
+            line-height: 1; /* Центровка */
+            padding-bottom: 2px; /* Легкая корректировка центра */
         }
-        
-        /* Текст занимает столько места, сколько нужно, не перекрываясь */
+        /* ИСПРАВЛЕННЫЙ ШРИФТ ЗАГОЛОВКОВ НА БАННЕРАХ (Montserrat) */
         .banner-text { 
-            font-family: 'Caveat', cursive; font-size: 1.2rem; color: #ff4d6d; 
-            line-height: 1.1; pointer-events: none; 
-            /* Дополнительный отступ, чтобы кнопкам не мешать */
-            margin-top: 5px;
+            font-family: 'Montserrat', sans-serif; /* Более читаемый */
+            font-weight: 600; /* Четкий вес */
+            font-size: 1.1rem; color: #ff4d6d; line-height: 1.1; 
         }
-
-        /* Форматы для десктопа (уменьшены пропорционально) */
-        .desktop-banner { position: fixed; }
-        /* Чеки шириной 320px. Делаем баннеры сопоставимыми или меньше. */
-        .banner-landscape { width: 300px; } /* Было 340 */
-        .banner-square { width: 240px; } /* Было 260 */
-        .banner-portrait { width: 200px; } /* Было 220 */
-
-        /* Формат для мобилки (в стопке, пропорционально меньше) */
-        .mobile-banner {
-            width: 85%; /* Было 90% */
-            max-width: 300px; /* Было 340px */
-            /* На мобильном наложение сильнее, т.к. баннеры меньше */
-            margin-top: -80px; 
-            transition: all 0.4s ease; z-index: 2;
-        }
-        .mobile-banner:nth-child(odd) { transform: rotate(-2deg); }
-        .mobile-banner:nth-child(even) { transform: rotate(3deg); }
 
         /* --- МОДАЛЬНЫЕ ОКНА --- */
         .modal-overlay {
@@ -181,7 +148,6 @@
         }
         .modal { background: white; padding: 40px; border-radius: 20px; text-align: center; max-width: 90%; width: 450px; }
         .modal h2 { color: #ff4d6d; font-family: 'Caveat', cursive; font-size: 2.5rem; margin-top: 0; }
-        .modal p { font-size: 1.1rem; line-height: 1.4; margin: 15px 0; }
         .modal-buttons { margin-top: 30px; display: flex; justify-content: center; gap: 20px; position: relative; min-height: 50px; }
         button { padding: 12px 25px; border: none; border-radius: 50px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1rem; }
         .btn-yes { background: #ff4d6d; color: white; }
@@ -223,10 +189,10 @@
 
     <div class="modal-overlay unselectable" id="rknModal">
         <div class="modal">
-            <h2>Информация о рекламе ℹ️</h2>
+            <h2>О рекламе ℹ️</h2>
             <p>Если бы эту рекламу проверил РКН, то они тоже бы узнали, как сильно я тебя люблю ❤️</p>
             <div class="modal-buttons">
-                <button class="btn-yes" onclick="closeRKN()">Закрыть</button>
+                <button class="btn-yes" onclick="closeRKN()">Убедили!</button>
             </div>
         </div>
     </div>
@@ -283,20 +249,36 @@
             </div>
 
             <div class="poem-receipt">
-                <div class="receipt-logo">МАГАЗИН "ВЕЧНАЯ ЛЮБОВЬ"</div>
+                <div class="receipt-logo">МАГАЗИН "СОПЛИ И ПОСУДА"</div>
                 <div class="receipt-info">
                     Кассир: Твой лев<br>
                     Покупатель: Никуша<br>
-                    Дата: 28.04.2026
+                    Дата: 14.02.2026
                 </div>
                 <div class="dashed-line"></div>
-                <h3>Э. Асадов</h3>
-                <p class="poem-text">Я могу тебя очень ждать,
-                Долго-долго и верно-верно,
-                И ночами могу не спать
-                Год, и два, и всю жизнь, наверно!</p>
+                <h3>ватизлов</h3>
+                <p class="poem-text">Я точно боюсь, я боюсь без конца, 
+                и меня тошнит от себя самого.
+                Я так скоро загнусь, нет, не сопьюсь, 
+                буду винить только себя, или вообще никого —
+                Я клянусь. 
+
+                Обещаю стать лучше, 
+                чем когда обещал лучше стать.
+                Буду ночами не спать, 
+                только думать о мире, 
+                где тебе могу всё, что есть, я отдать.
+                Говорить: "всё по-другому". 
+                Да и не могло на самом деле быть так.
+
+                Я всего лишь хотел узнать тебя всюду. 
+                Тебя узнать мне получилось никак.
+                Любить, смешить, мыть всю посуду. 
+                Не перестану даже падать-вставать. 
+                Перестану, быть может, 
+                я тебе это бояться сказать.</p>
                 <div class="dashed-line"></div>
-                <div class="receipt-total">ИТОГО: НУ КОПЕЕЧКУ СТОИТ</div>
+                <div class="receipt-total">ИТОГО: ЧТОБ ТЕБЕ ВСЁ ОТДАТЬ</div>
                 <div class="barcode"></div>
             </div>
 
@@ -354,11 +336,21 @@
             { img: 'img/2026-04-28 14.49.51.jpg', text: 'Моя чурка, любимая!' }
         ];
 
-        // --- ЛОГИКА СОЗДАНИЯ БАННЕРОВ ---
+        // --- ЛОГИКА БАННЕРОВ (ВСТРАИВАЕМ В СТОПКУ) ---
         function createBanner() {
-            const isMobile = window.innerWidth <= 768; // Проверка на мобилку
+            const stack = document.getElementById('receiptStack');
+            const items = stack.children;
+            if (items.length === 0) return;
+
+            const targetIndex = Math.floor(Math.random() * items.length);
+            const targetItem = items[targetIndex];
+
             const ad = adsData[Math.floor(Math.random() * adsData.length)];
+            const shapes = ['banner-landscape', 'banner-square', 'banner-portrait'];
+            const shapeClass = shapes[Math.floor(Math.random() * shapes.length)];
+
             const banner = document.createElement('div');
+            banner.className = `banner ${shapeClass} unselectable`;
             
             banner.innerHTML = `
                 <div class="btn-close" onclick="multiplyBanners(this)">x</div>
@@ -366,87 +358,20 @@
                 <img src="${ad.img}" alt="Ошибка загрузки фото!" onerror="this.style.display='none'; this.nextElementSibling.innerHTML += '<br><b>(Фото не найдено)</b>';">
                 <div class="banner-text">${ad.text}</div>
             `;
-
-            if (isMobile) {
-                // Мобильный вариант (строго в стопке)
-                banner.className = 'banner mobile-banner unselectable';
-                const stack = document.getElementById('receiptStack');
-                const items = stack.children;
-                if (items.length > 0) {
-                    const targetIndex = Math.floor(Math.random() * items.length);
-                    const targetItem = items[targetIndex];
-                    stack.insertBefore(banner, targetItem.nextSibling); // Вставляем между чеками
-                } else {
-                    stack.appendChild(banner);
-                }
-            } else {
-                // Компьютерный вариант (хаотично и перетаскиваемые)
-                const shapes = ['banner-landscape', 'banner-square', 'banner-portrait'];
-                const shapeClass = shapes[Math.floor(Math.random() * shapes.length)];
-                banner.className = `banner desktop-banner ${shapeClass} unselectable`;
-                
-                // Случайная позиция по всему экрану
-                // Отступы заменены в соответствии с новыми уменьшенными размерами
-                const maxX = window.innerWidth - 320;
-                const maxY = window.innerHeight - 350;
-                banner.style.left = Math.max(10, Math.random() * maxX) + 'px';
-                banner.style.top = Math.max(10, Math.random() * maxY) + 'px';
-                
-                document.body.appendChild(banner);
-                makeDraggable(banner); // Делаем перетаскиваемым
-            }
+            
+            targetItem.parentNode.insertBefore(banner, targetItem.nextSibling);
         }
 
-        // Логика размножения баннеров
         function multiplyBanners(btn) {
             const banner = btn.closest('.banner');
-            banner.remove(); // Закрываем
-            // Открываем два новых
+            banner.remove();
             setTimeout(() => createBanner(), 100);
             setTimeout(() => createBanner(), 300);
         }
 
-        // Логика перетаскивания (только для ПК)
-        function makeDraggable(elmnt) {
-            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            elmnt.onmousedown = dragMouseDown;
-
-            function dragMouseDown(e) {
-                // Игнорируем нажатие, если кликнули по крестику или точкам
-                if(e.target.className === 'btn-close' || e.target.className === 'btn-info') return;
-                e.preventDefault();
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                document.onmousemove = elementDrag;
-                
-                // Выдвигаем баннер на передний план при захвате
-                const allBanners = document.querySelectorAll('.desktop-banner');
-                allBanners.forEach(b => b.style.zIndex = 50);
-                elmnt.style.zIndex = 100;
-            }
-
-            function elementDrag(e) {
-                e.preventDefault();
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-            }
-
-            function closeDragElement() {
-                document.onmouseup = null;
-                document.onmousemove = null;
-            }
-        }
-
-        // --- ЛОГИКА ОКОН ---
         function showRKN() { document.getElementById('rknModal').style.display = 'flex'; }
         function closeRKN() { document.getElementById('rknModal').style.display = 'none'; }
 
-        // Убегающая кнопка
         const btnNo = document.getElementById('btnNo');
         const moveButton = (e) => {
             e.preventDefault();
@@ -479,7 +404,6 @@
             if (e.key === 'Enter') validateCaptcha();
         });
 
-        // --- АНИМАЦИЯ СЕРДЕЧЕК ---
         const canvas = document.getElementById('hearts');
         const ctx = canvas.getContext('2d');
         let heartsArr = [];
