@@ -3,319 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>любимка <3</title>
+    <title>Для моей любимой Николь ❤️</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Montserrat:wght@300;400;600&display=swap');
 
-        body {
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-            font-family: 'Montserrat', sans-serif;
-            color: #4a4a4a;
-            overflow-x: hidden;
-       /* Железобетонный курсор для всего сайта */
-        html, body, *, button, a, div {
+        /* ЖЕЛЕЗОБЕТОННЫЙ КУРСОР - работает везде */
+        html, body, *, button, a, div, input {
             cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%90%BE%3C/text%3E%3C/svg%3E") 16 16, auto !important;
         }
 
-        /* Запрещаем выделение текста в блоках */
-        .unselectable {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+        body {
+            margin: 0; padding: 0;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            font-family: 'Montserrat', sans-serif;
+            color: #4a4a4a; overflow-x: hidden; min-height: 100vh;
         }
 
+        .unselectable { user-select: none; -webkit-user-select: none; }
+
         .hearts-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
         }
 
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            position: relative;
-            z-index: 1;
-            text-align: center;
+            max-width: 800px; margin: 0 auto; padding: 40px 20px;
+            position: relative; z-index: 1; text-align: center;
         }
 
-        h1 {
-            font-family: 'Caveat', cursive;
-            font-size: 3.5rem;
-            color: #ff4d6d;
-            margin-bottom: 10px;
+        h1 { font-family: 'Caveat', cursive; font-size: 3.5rem; color: #ff4d6d; margin-bottom: 10px; }
+        .subtitle { font-size: 1.2rem; color: #888; margin-bottom: 40px; }
+
+        /* --- СТОПКА НАСТОЯЩИХ ЧЕКОВ --- */
+        .receipt-stack {
+            display: flex; flex-direction: column; align-items: center;
+            margin-top: 80px; margin-bottom: 100px;
         }
 
-        .subtitle {
-            font-size: 1.2rem;
-            color: #888;
-            margin-bottom: 40px;
-        }
-
-        .compliments {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.1);
-            margin-bottom: 40px;
-            border: 2px dashed #ffb3c1;
-        }
-
-        .compliments p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin: 10px 0;
-        }
-
-        /* receipt-style for poems */
         .poem-receipt {
             background: #fff;
-            border: 1px solid #ddd;
-            border-top: 10px solid #f9f9f9;
-            border-bottom: 10px solid #f9f9f9;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            text-align: center;
-            font-family: 'Montserrat', sans-serif;
+            width: 320px;
+            padding: 30px 20px;
             position: relative;
-            transition: transform 0.3s ease;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+            margin-top: -120px; /* Наложение друг на друга */
+            transition: all 0.4s ease;
+            z-index: 1;
+            color: #222;
+            font-family: 'Courier New', Courier, monospace; /* Кассовый шрифт */
+            font-weight: bold;
         }
 
-        .poem-receipt:hover {
-            transform: translateY(-5px);
+        /* Зубчатый край сверху */
+        .poem-receipt::before {
+            content: ""; position: absolute; top: -8px; left: 0; right: 0; height: 8px;
+            background-image: radial-gradient(circle at 5px 0, transparent 6px, #fff 6px);
+            background-size: 10px 8px; background-repeat: repeat-x;
         }
 
+        /* Зубчатый край снизу */
         .poem-receipt::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: repeating-linear-gradient(90deg, transparent, transparent 5px, rgba(0,0,0,0.1) 5px, rgba(0,0,0,0.1) 10px);
+            content: ""; position: absolute; bottom: -8px; left: 0; right: 0; height: 8px;
+            background-image: radial-gradient(circle at 5px 8px, transparent 6px, #fff 6px);
+            background-size: 10px 8px; background-repeat: repeat-x;
         }
 
-        .poem-receipt h3 {
-            color: #ff4d6d;
-            margin-top: 0;
-            font-family: 'Caveat', cursive;
-            font-size: 2.5rem;
+        /* Эффект небрежной стопки */
+        .poem-receipt:nth-child(even) { transform: rotate(3deg); }
+        .poem-receipt:nth-child(odd) { transform: rotate(-2deg); }
+        .poem-receipt:nth-child(3n) { transform: rotate(1deg); }
+
+        /* ПРИ НАВЕДЕНИИ: чеки выстраиваются в ряд и вытягиваются */
+        .receipt-stack:hover .poem-receipt {
+            margin-top: 30px; transform: rotate(0deg);
         }
 
-        .poem-receipt p {
-            white-space: pre-line;
-            font-style: italic;
-            font-weight: 300;
+        /* ПРИ НАВЕДЕНИИ НА КОНКРЕТНЫЙ ЧЕК */
+        .receipt-stack:hover .poem-receipt:hover {
+            z-index: 10; transform: scale(1.08) translateY(-10px);
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.3));
+        }
+
+        /* Внутренности чека */
+        .receipt-logo { font-size: 1.4rem; margin-bottom: 10px; text-transform: uppercase; text-align: center; }
+        .receipt-info { text-align: left; font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px; }
+        .dashed-line { border-bottom: 2px dashed #222; margin: 15px 0; }
+        
+        .poem-receipt h3 { font-size: 1.2rem; margin: 0; text-transform: uppercase; text-align: center; }
+        .poem-receipt p.poem-text { font-size: 1rem; text-align: left; white-space: pre-line; margin-top: 15px; }
+        .receipt-total { text-align: right; font-size: 1.1rem; margin-top: 15px; text-transform: uppercase; }
+        
+        /* Генерация реалистичного штрихкода */
+        .barcode {
+            height: 40px; width: 90%; margin: 20px auto 0;
+            background: repeating-linear-gradient(90deg, #222, #222 2px, transparent 2px, transparent 4px, #222 4px, #222 5px, transparent 5px, transparent 8px, #222 8px, #222 12px, transparent 12px, transparent 14px);
         }
 
         /* --- РЕКЛАМНЫЕ БАННЕРЫ --- */
         .banners-container {
-            position: fixed;
-            top: 50%;
-            width: auto;
-            height: auto;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 50;
+            position: fixed; top: 20%; bottom: 20%; width: 150px;
+            display: flex; flex-direction: column; gap: 15px; z-index: 50; pointer-events: none;
         }
-
-        .left-banners { left: 15px; }
-        .right-banners { right: 15px; }
+        .left-banners { left: 20px; }
+        .right-banners { right: 20px; }
 
         .banner {
-            width: 150px;
-            height: 150px;
-            background: #fff;
-            border: 2px solid #ffb3c1;
-            border-radius: 10px;
-            box-shadow: 0 5px 10px rgba(255, 77, 109, 0.1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 10px;
-            position: relative;
-            transition: all 0.3s;
+            pointer-events: auto; width: 100%; background: #fff;
+            border: 2px solid #ffb3c1; border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.15); padding: 10px; box-sizing: border-box;
+            position: relative; animation: popIn 0.5s ease-out; text-align: center;
         }
-
-        .banner:hover {
-            transform: scale(1.05);
-        }
-
-        .banner img {
-            max-width: 100px;
-            max-height: 100px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-
+        @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
+        .banner img { width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
+        
         .banner .btn-close {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 20px;
-            height: 20px;
-            background: #e0e0e0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            cursor: pointer;
-            z-index: 100;
+            position: absolute; top: -5px; right: -5px; width: 24px; height: 24px;
+            background: #ff4d6d; color: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-
-        .banner-text {
-            font-size: 0.8rem;
-            color: #ff4d6d;
-            margin-top: 5px;
-        }
+        .banner-text { font-family: 'Caveat', cursive; font-size: 1.2rem; color: #ff4d6d; line-height: 1.1; }
 
         /* --- МОДАЛЬНЫЕ ОКНА --- */
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px);
+            display: flex; justify-content: center; align-items: center; z-index: 1000;
         }
+        .modal { background: white; padding: 40px; border-radius: 20px; text-align: center; max-width: 90%; width: 450px; }
+        .modal h2 { color: #ff4d6d; font-family: 'Caveat', cursive; font-size: 2.5rem; margin-top: 0; }
+        .modal-buttons { margin-top: 30px; display: flex; justify-content: center; gap: 20px; position: relative; min-height: 50px; }
+        button { padding: 12px 25px; border: none; border-radius: 50px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1rem; }
+        .btn-yes { background: #ff4d6d; color: white; }
+        .btn-no { background: #e0e0e0; color: #666; position: relative; }
 
-        .modal {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            max-width: 90%;
-            width: 450px;
-        }
-
-        .modal h2 {
-            color: #ff4d6d;
-            font-family: 'Caveat', cursive;
-            font-size: 2.5rem;
-            margin-top: 0;
-        }
-
-        .modal p {
-            font-size: 1.1rem;
-            line-height: 1.4;
-        }
-
-        .modal-buttons {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            position: relative;
-            min-height: 50px;
-        }
-
-        button {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 50px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAKeSURBVHgB7VdLaxNRGP3NpJm0SVuaNjV9aJuqraAV3YguXAhuxYVbEb+ALvyELny4daGLgguLoigVLFYpLhQUbUuSpsmmzbwyyfSceW/m3plMMp2EovPhzMydmW+++e45544gFArZIKK8wY4T25i5m/Z89z/4Y98b4Y8X+R2O53sHicH8f1A+f5V07f9S5vjK+S8B9G8B9G8B9G8B9G8BNMsrL/yA582fC67v3pY6uXh5/8wM8F8C6N8CdK/Y4WwF4fAnY3LxzM5wLMC+V55079R4U3GqY4TDr7Hj6Sj/f46/7yM/ZcZk+88FMDu7w8p/q6Qp+1A6yI75/6/w3V9YQ2a0Uf44SjM4pZlZ3A6zM8hI4FpA98S76OonpL4pXN3Hjs/iYm5Xid0Y9M7Y4SgM645Xm7nF8wL6w/D7MvLbeG575M3x9XwQ/y7634f19bY99R7X0fH4HOr9Fubf974WwI853s+w46kY/P64wS7fU4CqO56Lwfd3WJ7vUj6vO95pZ5Z5X8AofY+86v6pBvDxfG9Xw/j7VfC8i/M1v9wMvV8H34/R9yP0fR0/P5Iat77eU7p605h9M8h6V8L/P35fRn6f96L/m5zG6eB7I88LoGve9Vb6C3Y4X459737A4+q+3H/M8XGfTjLwK5pBv+z5Wp578K/T59N8L+357v/Z/eF4D33v4Dk+7scZ+AXf3/m0t/2pXwugfwugfwugfwugfwvA//T/E0A/DqB/C6B/C6B/C6B/C8A8B4mX930mNshhG6Eby6O48mYpS3D28bX9T9L3U1w7A4f647Y/5w73D6U7P8fU5YQfE9m/5fGfH/8FUMZf416Tft4X8NOfpP8H+AOLQ6f0v+pX1N96GvwvAAAAAElFTkSuQmCC') 16 16, pointer;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-
-        .btn-yes {
-            background: #ff4d6d;
-            color: white;
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
-        }
-
-        .btn-yes:hover {
-            background: #c9184a;
-            transform: scale(1.05);
-        }
-
-        .btn-no {
-            background: #e0e0e0;
-            color: #666;
-            position: relative;
-        }
-
-        /* --- КАПЧА --- */
-        #captchaModal {
-            display: none; /* Скрыто по умолчанию */
-        }
-
+        #captchaModal { display: none; }
         .captcha-image-block {
-            background: #fdf2f4;
-            border: 2px solid #ffb3c1;
-            color: #ff4d6d;
-            font-family: 'Caveat', cursive;
-            font-size: 3rem;
-            padding: 10px 20px;
-            margin: 20px auto;
-            border-radius: 10px;
-            width: fit-content;
-            transform: rotate(-3deg) skew(-5deg); /* Эффект искажения капчи */
-            letter-spacing: 2px;
-            filter: blur(0.5px); /* Легкое размытие */
+            background: #fdf2f4; border: 2px solid #ffb3c1; color: #ff4d6d; font-family: 'Caveat', cursive; font-size: 3rem; padding: 10px 20px;
+            margin: 20px auto; border-radius: 10px; transform: rotate(-3deg) skew(-5deg); filter: blur(0.5px);
         }
-
-        .captcha-input {
-            width: 80%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            text-align: center;
-            font-family: 'Montserrat', sans-serif;
-            margin-bottom: 20px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .captcha-input:focus {
-            border-color: #ff4d6d;
-        }
-
-        .captcha-input.error {
-            border-color: #e63946;
-            animation: shake 0.5s;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-
-        .footer {
-            margin-top: 50px;
-            font-family: 'Caveat', cursive;
-            font-size: 2rem;
-            color: #ff4d6d;
-        }
-
+        .captcha-input { width: 80%; padding: 15px; border: 2px solid #ddd; border-radius: 50px; font-size: 1.1rem; text-align: center; font-family: 'Montserrat', sans-serif; margin-bottom: 20px; outline: none; }
+        .captcha-input.error { border-color: #e63946; }
+        .footer { margin-top: 50px; font-family: 'Caveat', cursive; font-size: 2rem; color: #ff4d6d; padding-bottom: 30px;}
     </style>
 </head>
 <body>
@@ -334,235 +164,120 @@
     <div class="modal-overlay unselectable" id="captchaModal">
         <div class="modal">
             <h2>Проверка безопасности 🔐</h2>
-            <p>Система должна убедиться, что ты та, за кого себя выдаешь.</p>
             <p>Пожалуйста, подтверди, что ты — <b>самая привлекательная турчанка в мире</b>!</p>
             <p>Для входа введи слово с картинки:</p>
-            
             <div class="captcha-image-block">целую</div>
-            
             <input type="text" class="captcha-input" id="captchaInputField" placeholder="Введи слово сюда...">
-            
-            <div>
-                <button class="btn-yes" onclick="validateCaptcha()">Подтвердить</button>
-            </div>
+            <div><button class="btn-yes" onclick="validateCaptcha()">Подтвердить</button></div>
         </div>
     </div>
 
-    <div class="banners-container left-banners unselectable" id="leftBanners">
-        <div class="banner">
-            <div class="btn-close" onclick="closeBanner(this)">x</div>
-            <img src="data:image/png;base64,..." alt="Для Николь ❤️">
-            <div class="banner-text">Для Николь ❤️</div>
-        </div>
-    </div>
-    <div class="banners-container right-banners unselectable" id="rightBanners">
-        <div class="banner">
-            <div class="btn-close" onclick="closeBanner(this)">x</div>
-            <img src="data:image/png;base64,..." alt="Самая любимая 💖">
-            <div class="banner-text">Самая любимая 💖</div>
-        </div>
-    </div>
+    <div class="banners-container left-banners unselectable" id="leftBanners"></div>
+    <div class="banners-container right-banners unselectable" id="rightBanners"></div>
 
     <canvas class="hearts-bg" id="hearts"></canvas>
 
     <div class="container unselectable">
         <h1>Для моей любимой Николь</h1>
-        <div class="subtitle">Сайт, созданный специально для тебя</div>
+        <div class="subtitle">Наведи мышку (или нажми) на стопку чеков ниже, чтобы вытянуть стих</div>
 
-        <div class="compliments">
-            <p>❤️ <b>Николь</b>, твоя улыбка делает этот мир светлее.</p>
-            <p>✨ Ты самая умная, невероятная и потрясающая.</p>
-            <p>🌸 Твой смех — моя любимая мелодия.</p>
-            <p>🇹🇷 Ты — настоящая жемчужина, самая-самая!</p>
-            <p>💖 Ретро-вайб, но ты — вечная классика!</p>
-            <p>Санкт-Петербург тебе к лицу! 😉</p>
-            <p>Твой стиль OMG! 💅</p>
-            <p>Осторожно! В твоих глазах можно утонуть. 😍</p>
-            <p>Твоя уютная шапка — 🔥! Самая теплая улыбка.</p>
-            <p>Чистая красота. ✨ Удачи во всем!</p>
-            <p> القلب ينبض لك. 💓 (Сердце бьется для тебя)</p>
-            <p>Спасибо, что ты есть у меня!</p>
-        </div>
+        <div class="receipt-stack" id="receiptStack">
+            
+            <div class="poem-receipt">
+                <div class="receipt-logo">МАГАЗИН "ВЕЧНАЯ ЛЮБОВЬ"</div>
+                <div class="receipt-info">
+                    Кассир: Владик<br>
+                    Покупатель: Николь<br>
+                    Дата: 28.04.2026<br>
+                    Статус: ОПЛАЧЕНО СЕРДЦЕМ
+                </div>
+                <div class="dashed-line"></div>
+                <h3>С. Есенин</h3>
+                <p class="poem-text">Заметался пожар голубой,
+                Позабылись родимые дали.
+                В первый раз я запел про любовь,
+                В первый раз отрекаюсь скандалить.
 
-        <div class="poem-receipt">
-            <h3>Сергей Есенин</h3>
-            <p>ЧЕК #001 | СЕРГЕЙ ЕСЕНИН | ДАТА: 1923
-            ----------
-            Заметался пожар голубой,
-            Позабылись родимые дали.
-            В первый раз я запел про любовь,
-            В первый раз отрекаюсь скандалить.
+                Мне бы только смотреть на тебя,
+                Видеть глаз злато-карий омут,
+                И чтоб, прошлое не любя,
+                Ты уйти не смогла к другому.</p>
+                <div class="dashed-line"></div>
+                <div class="receipt-total">ИТОГО: БЕСЦЕННО</div>
+                <div class="barcode"></div>
+            </div>
 
-            Мне бы только смотреть на тебя,
-            Видеть глаз злато-карий омут,
-            И чтоб, прошлое не любя,
-            Ты уйти не смогла к другому.</p>
-        </div>
+            <div class="poem-receipt">
+                <div class="receipt-logo">МАГАЗИН "ВЕЧНАЯ ЛЮБОВЬ"</div>
+                <div class="receipt-info">
+                    Кассир: Владик<br>
+                    Покупатель: Николь<br>
+                    Дата: 28.04.2026<br>
+                    Артикул: ВДОХНОВЕНИЕ
+                </div>
+                <div class="dashed-line"></div>
+                <h3>А. Пушкин</h3>
+                <p class="poem-text">Я помню чудное мгновенье:
+                Передо мной явилась ты,
+                Как мимолетное виденье,
+                Как гений чистой красоты.</p>
+                <div class="dashed-line"></div>
+                <div class="receipt-total">ИТОГО: БЕСЦЕННО</div>
+                <div class="barcode"></div>
+            </div>
 
-        <div class="poem-receipt">
-            <h3>Александр Пушкин</h3>
-            <p>ЧЕК #002 | АЛЕКСАНДР ПУШКИН | ДАТА: 1825
-            ----------
-            Я помню чудное мгновенье:
-            Передо мной явилась ты,
-            Как мимолетное виденье,
-            Как гений чистой красоты.
+            <div class="poem-receipt">
+                <div class="receipt-logo">МАГАЗИН "ВЕЧНАЯ ЛЮБОВЬ"</div>
+                <div class="receipt-info">
+                    Кассир: Владик<br>
+                    Покупатель: Николь<br>
+                    Дата: 28.04.2026
+                </div>
+                <div class="dashed-line"></div>
+                <h3>Э. Асадов</h3>
+                <p class="poem-text">Я могу тебя очень ждать,
+                Долго-долго и верно-верно,
+                И ночами могу не спать
+                Год, и два, и всю жизнь, наверно!</p>
+                <div class="dashed-line"></div>
+                <div class="receipt-total">ИТОГО: БЕСЦЕННО</div>
+                <div class="barcode"></div>
+            </div>
 
-            В томленьях грусти безнадежной,
-            В тревогах шумной суеты,
-            Звучал мне долго голос нежный
-            И снились милые черты.</p>
-        </div>
+            <div class="poem-receipt">
+                <div class="receipt-logo">МАГАЗИН "ВЕЧНАЯ ЛЮБОВЬ"</div>
+                <div class="receipt-info">
+                    Кассир: Владик<br>
+                    Покупатель: Николь
+                </div>
+                <div class="dashed-line"></div>
+                <h3>А. Блок</h3>
+                <p class="poem-text">О доблестях, о подвигах, о славе
+                Я забывал на горестной земле,
+                Когда твое лицо в простой оправе
+                Передо мной сияло на столе.</p>
+                <div class="dashed-line"></div>
+                <div class="receipt-total">ИТОГО: БЕСЦЕННО</div>
+                <div class="barcode"></div>
+            </div>
 
-        <div class="poem-receipt">
-            <h3>Эдуард Асадов</h3>
-            <p>ЧЕК #003 | ЭДУАРД АСАДОВ | ДАТА: 1968
-            ----------
-            Я могу тебя очень ждать,
-            Долго-долго и верно-верно,
-            И ночами могу не спать
-            Год, и два, и всю жизнь, наверно!
+            <div class="poem-receipt">
+                <div class="receipt-logo">МАГАЗИН "ВЕЧНАЯ ЛЮБОВЬ"</div>
+                <div class="receipt-info">
+                    Кассир: Владик<br>
+                    Покупатель: Николь
+                </div>
+                <div class="dashed-line"></div>
+                <h3>А. Фет</h3>
+                <p class="poem-text">Не уезжай, — побудь со мной еще,
+                Не уезжай, — побудь со мной еще,
+                Не уезжай, — побудь со мной еще,
+                Твоя улыбка так легка!</p>
+                <div class="dashed-line"></div>
+                <div class="receipt-total">ИТОГО: БЕСЦЕННО</div>
+                <div class="barcode"></div>
+            </div>
 
-            Пусть листочки календаря
-            Облетят, как листва у сада,
-            Только знать бы, что все не зря,
-            Что тебе это вправду надо!</p>
-        </div>
-
-        <div class="poem-receipt">
-            <h3>Михаил Лермонтов</h3>
-            <p>ЧЕК #004 | МИХАИЛ ЛЕРМОНТОВ | ДАТА: 1841
-            ----------
-            И скучно и грустно, и некому руку подать
-            В минуту душевной невзгоды…
-            Желанья!.. что пользы напрасно и вечно желать?..
-            А годы проходят — все лучшие годы!
-
-            Любить… но кого же?.. на время — не стоит труда,
-            А вечно любить невозможно.
-            В себя ли заглянешь? — там прошлого нет и следа:
-            И радость, и муки, и всё там ничтожно…</p>
-        </div>
-
-        <div class="poem-receipt">
-            <h3>Федор Тютчев</h3>
-            <p>ЧЕК #005 | ФЕДОР ТЮТЧЕВ | ДАТА: 1836
-            ----------
-            Я встретил вас — и всё былое
-            В отжившем сердце ожило;
-            Я вспомнил время золотое —
-            И сердцу стало так тепло…
-
-            Как поздней осени порою
-            Бывают дни, бывает час,
-            Когда повеет вдруг весною
-            И что-то встрепенется в нас…</p>
-        </div>
-
-        <div class="poem-receipt">
-            <h3>Афанасий Фет</h3>
-            <p>ЧЕК #006 | АФАНАСИЙ ФЕТ | ДАТА: 1842
-            ----------
-            Я пришел к тебе с приветом,
-            Рассказать, что солнце встало,
-            Что оно горячим светом
-            По листам затрепетало;
-
-            Рассказать, что лес проснулся,
-            Весь проснулся, веткой каждой,
-            Каждой птицей встрепенулся
-            И весенней полон жаждой…</p>
-        </div>
-
-        <div class="poem-receipt">
-            <h3>Александр Блок</h3>
-            <p>ЧЕК #007 | АЛЕКСАНДР БЛОК | ДАТА: 1908
-            ----------
-            О доблестях, о подвигах, о славе
-            Я забывал на горестной земле,
-            Когда твое лицо в простой оправе
-            Передо мной сияло на столе.
-
-            Но час настал, и ты ушла из дому.
-            Я бросил в ночь заветное кольцо.
-            Ты отдала свою судьбу другому,
-            И я забыл прекрасное лицо.</p>
-        </div>
-
-        <div class="poem-receipt">
-            <h3>Анна Ахматова</h3>
-            <p>ЧЕК #008 | АННА АХМАТОВА | ДАТА: 1913
-            ----------
-            Сжала руки под темной вуалью…
-            «Отчего ты сегодня бледна?»
-            — Оттого, что я терпкой печалью
-            Напоила его допьяна.
-
-            Как забуду? Он вышел, шатаясь,
-            Искривился мучительно рот…
-            Я сбежала, перил не касаясь,
-            Я бежала за ним до ворот.</p>
-        </div>
-
-        <div class="poem-receipt">
-            <h3>Марина Цветаева</h3>
-            <p>ЧЕК #009 | МАРИНА ЦВЕТАЕВА | ДАТА: 1915
-            ----------
-            Имя твое — птица в руке,
-            Имя твое — льдинка на языке,
-            Одно единственное движенье губ,
-            Имя твое — пять букв.
-
-            Мячик, пойманный на лету,
-            Серебряный бубенец во рту…</p>
-        </div>
-
-        <div class="poem-receipt">
-            <h3>Борис Пастернак</h3>
-            <p>ЧЕК #010 | БОРИС ПАСТЕРНАК | ДАТА: 1946
-            ----------
-            Быть знаменитым некрасиво.
-            Не это поднимает ввысь.
-            Не надо заводить архива,
-            Над рукописями трястись.
-
-            Цель творчества — самоотдача,
-            А не шумиха, не успех.
-            Позорно, ничего не знача,
-            Быть притчей на устах у всех.</p>
-        </div>
-
-        <div class="poem-receipt">
-            <h3>Владимир Маяковский</h3>
-            <p>ЧЕК #011 | ВЛАДИМИР МАЯКОВСКИЙ | ДАТА: 1913
-            ----------
-            Послушайте!
-            Ведь, если звезды зажигают —
-            значит — это кому-нибудь нужно?
-            Значит — кто-нибудь хочет, чтобы они были?
-            Значит — кто-нибудь называет
-            эти плево́чки
-            жемчужиной?</p>
-        </div>
-
-        <div class="poem-receipt">
-            <h3>Владимир Высоцкий</h3>
-            <p>ЧЕК #012 | ВЛАДИМИР ВЫСОЦКИЙ | ДАТА: 1966
-            ----------
-            Если я заболею, к врачам обращаться не стану,
-            Обращусь я к друзьям (не сочтите, что это в бреду):
-            Постелите мне степь, занавесьте мне окна туманом,
-            В изголовье поставьте ночную звезду.</p>
-        </div>
-
-        <div class="poem-receipt">
-            <h3>Афанасий Фет</h3>
-            <p>ЧЕК #013 | АФАНАСИЙ ФЕТ | ДАТА: 1888
-            ----------
-            Не уезжай, — побудь со мной еще,
-            Не уезжай, — побудь со мной еще,
-            Не уезжай, — побудь со мной еще,
-            Твоя улыбка так легка!</p>
         </div>
 
         <div class="footer">
@@ -571,145 +286,118 @@
     </div>
 
     <script>
+        // --- ДАННЫЕ С ТОЧНЫМИ ИМЕНАМИ ФАЙЛОВ КАК У ТЕБЯ ---
+        const adsData = [
+            { img: 'img/2026-04-28 14.49.17.jpg', text: 'Самая смешная мордашка 🤪' },
+            { img: 'img/2026-04-28 14.49.22.jpg', text: 'Стиль OMG! 💅' },
+            { img: 'img/2026-04-28 14.49.26.jpg', text: 'Уютная в шарфике 🧣' },
+            { img: 'img/2026-04-28 14.49.29.jpg', text: 'Идеальный макияж ✨' },
+            { img: 'img/2026-04-28 14.49.33.jpg', text: 'Самая искренняя улыбка 💖' },
+            { img: 'img/2026-04-28 14.49.37.jpg', text: 'Улыбка, которая греет 🥰' },
+            { img: 'img/2026-04-28 14.49.41.jpg', text: 'Глаза, в которых можно утонуть 😍' },
+            { img: 'img/2026-04-28 14.49.44.jpg', text: 'Питер тебе к лицу! 🏛️' },
+            { img: 'img/2026-04-28 14.49.48.jpg', text: 'Сногсшибательный взгляд 🔥' },
+            { img: 'img/2026-04-28 14.49.51.jpg', text: 'Моя радость ☀️' }
+        ];
+
+        // --- ЛОГИКА БАННЕРОВ ---
+        function createBanner(side) {
+            const container = document.getElementById(side === 'left' ? 'leftBanners' : 'rightBanners');
+            if (container.children.length > 4) return;
+
+            const ad = adsData[Math.floor(Math.random() * adsData.length)];
+            const banner = document.createElement('div');
+            banner.className = 'banner';
+            
+            // Если картинка не найдена, она покажет текст ошибки
+            banner.innerHTML = `
+                <div class="btn-close" onclick="multiplyBanners(this)">x</div>
+                <img src="${ad.img}" alt="Ошибка загрузки фото!" onerror="this.style.display='none'; this.nextElementSibling.innerHTML += '<br><b>(Фото не найдено в img/)</b>';">
+                <div class="banner-text">${ad.text}</div>
+            `;
+            container.appendChild(banner);
+        }
+
+        function multiplyBanners(btn) {
+            const banner = btn.closest('.banner');
+            const containerId = banner.parentElement.id;
+            const side = containerId === 'leftBanners' ? 'left' : 'right';
+            
+            banner.remove();
+            setTimeout(() => createBanner(side), 100);
+            setTimeout(() => createBanner(side === 'left' ? 'right' : 'left'), 300);
+        }
+
         // --- ЛОГИКА УБЕГАЮЩЕЙ КНОПКИ ---
         const btnNo = document.getElementById('btnNo');
-        
         const moveButton = (e) => {
             e.preventDefault();
             const x = Math.random() * (window.innerWidth - btnNo.offsetWidth - 20);
             const y = Math.random() * (window.innerHeight - btnNo.offsetHeight - 20);
-            
             btnNo.style.position = 'fixed';
             btnNo.style.left = `${Math.max(10, x)}px`;
             btnNo.style.top = `${Math.max(10, y)}px`;
         };
-
         btnNo.addEventListener('mouseover', moveButton);
         btnNo.addEventListener('touchstart', moveButton);
 
-        // --- ЛОГИКА МОДАЛЬНЫХ ОКОН ---
+        // --- МОДАЛЬНЫЕ ОКНА И КАПЧА ---
         function acceptTruth() {
-            // Закрываем первое окно
             document.getElementById('customModal').style.display = 'none';
-            
-            // Запускаем таймер на 5 секунд для появления капчи
-            setTimeout(showCaptcha, 5000);
-        }
-
-        function showCaptcha() {
-            document.getElementById('captchaModal').style.display = 'flex';
+            setTimeout(() => { document.getElementById('captchaModal').style.display = 'flex'; }, 5000);
         }
 
         function validateCaptcha() {
             const inputField = document.getElementById('captchaInputField');
-            const userValue = inputField.value.trim().toLowerCase(); // Убираем пробелы и приводим к нижнему регистру
-            const correctValue = 'целую';
-
-            if (userValue === correctValue) {
-                // Если правильно: закрываем капчу
+            const userValue = inputField.value.trim().toLowerCase();
+            if (userValue === 'целую') {
                 document.getElementById('captchaModal').style.display = 'none';
+                // Запускаем баннеры после правильного слова
+                setTimeout(() => createBanner('left'), 1000);
+                setTimeout(() => createBanner('right'), 2500);
             } else {
-                // Если неправильно: трясем поле и очищаем
                 inputField.classList.add('error');
                 inputField.value = '';
-                setTimeout(() => {
-                    inputField.classList.remove('error');
-                }, 500);
+                setTimeout(() => inputField.classList.remove('error'), 500);
             }
         }
-
-        // Позволяем нажимать Enter в поле ввода капчи
         document.getElementById('captchaInputField').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                validateCaptcha();
-            }
+            if (e.key === 'Enter') validateCaptcha();
         });
 
-
-        // --- ЛОГИКА РЕКЛАМНЫХ БАННЕРОВ ---
-        function closeBanner(btn) {
-            const banner = btn.closest('.banner');
-            const container = banner.closest('.banners-container');
-            const newBannersCount = 2; // Сколько баннеров открывается взамен
-
-            for (let i = 0; i < newBannersCount; i++) {
-                const newBanner = document.createElement('div');
-                newBanner.className = 'banner';
-                newBanner.innerHTML = `
-                    <div class="btn-close" onclick="closeBanner(this)">x</div>
-                    <img src="data:image/png;base64,..." alt="Для Николь ❤️">
-                    <div class="banner-text">Для Николь ❤️</div>
-                `;
-                container.appendChild(newBanner);
-            }
-            
-            banner.remove(); // Удаляем старый баннер
-        }
-
-
-        // --- АНИМАЦИЯ ПАДАЮЩИХ СЕРДЕЧЕК НА ФОНЕ ---
+        // --- АНИМАЦИЯ СЕРДЕЧЕК ---
         const canvas = document.getElementById('hearts');
         const ctx = canvas.getContext('2d');
         let heartsArr = [];
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 
         class Heart {
             constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 15 + 5;
-                this.speedY = Math.random() * 1 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.opacity = Math.random() * 0.5 + 0.2;
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 15 + 5; this.speedY = Math.random() * 1 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5; this.opacity = Math.random() * 0.5 + 0.2;
             }
             update() {
-                this.y += this.speedY;
-                this.x += this.speedX;
-                if (this.y > canvas.height) {
-                    this.y = 0 - this.size;
-                    this.x = Math.random() * canvas.width;
-                }
+                this.y += this.speedY; this.x += this.speedX;
+                if (this.y > canvas.height) { this.y = 0 - this.size; this.x = Math.random() * canvas.width; }
             }
             draw() {
-                ctx.globalAlpha = this.opacity;
-                ctx.fillStyle = '#ffb3c1';
-                ctx.beginPath();
-                const topCurveHeight = this.size * 0.3;
-                ctx.moveTo(this.x, this.y + topCurveHeight);
+                ctx.globalAlpha = this.opacity; ctx.fillStyle = '#ffb3c1'; ctx.beginPath();
+                const topCurveHeight = this.size * 0.3; ctx.moveTo(this.x, this.y + topCurveHeight);
                 ctx.bezierCurveTo(this.x, this.y, this.x - this.size / 2, this.y, this.x - this.size / 2, this.y + topCurveHeight);
                 ctx.bezierCurveTo(this.x - this.size / 2, this.y + (this.size + topCurveHeight) / 2, this.x, this.y + (this.size + topCurveHeight) / 2, this.x, this.y + this.size);
                 ctx.bezierCurveTo(this.x, this.y + (this.size + topCurveHeight) / 2, this.x + this.size / 2, this.y + (this.size + topCurveHeight) / 2, this.x + this.size / 2, this.y + topCurveHeight);
-                ctx.bezierCurveTo(this.x + this.size / 2, this.y, this.x, this.y, this.x, this.y + topCurveHeight);
-                ctx.closePath();
-                ctx.fill();
+                ctx.bezierCurveTo(this.x + this.size / 2, this.y, this.x, this.y, this.x, this.y + topCurveHeight); ctx.closePath(); ctx.fill();
             }
         }
-
-        function initHearts() {
-            heartsArr = [];
-            for (let i = 0; i < 50; i++) {
-                heartsArr.push(new Heart());
-            }
-        }
-
+        function initHearts() { heartsArr = []; for (let i = 0; i < 50; i++) heartsArr.push(new Heart()); }
         function animateHearts() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < heartsArr.length; i++) {
-                heartsArr[i].update();
-                heartsArr[i].draw();
-            }
+            for (let i = 0; i < heartsArr.length; i++) { heartsArr[i].update(); heartsArr[i].draw(); }
             requestAnimationFrame(animateHearts);
         }
-
-        initHearts();
-        animateHearts();
+        initHearts(); animateHearts();
     </script>
 </body>
 </html>
