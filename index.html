@@ -1,429 +1,804 @@
 <!DOCTYPE html>
+
 <html lang="ru">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>любимке <3</title>
+
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>">
+
     <style>
+
         @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Montserrat:wght@300;400;600&display=swap');
 
+
+
         /* ЖЕЛЕЗОБЕТОННЫЙ КУРСОР - работает везде */
+
         html, body, *, button, a, div, input {
+
             cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%90%BE%3C/text%3E%3C/svg%3E") 16 16, auto !important;
+
         }
 
+
+
         body {
+
             margin: 0; padding: 0;
+
             background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+
             font-family: 'Montserrat', sans-serif;
+
             color: #4a4a4a; overflow-x: hidden; min-height: 100vh;
+
         }
+
+
 
         .unselectable { user-select: none; -webkit-user-select: none; }
 
+
+
         .hearts-bg {
+
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+
             pointer-events: none; z-index: 0;
+
         }
+
+
 
         .container {
+
             max-width: 800px; margin: 0 auto; padding: 40px 20px;
+
             position: relative; z-index: 1; text-align: center;
+
         }
+
+
 
         h1 { font-family: 'Caveat', cursive; font-size: 3.5rem; color: #ff4d6d; margin-bottom: 10px; }
+
         .subtitle { font-size: 1.2rem; color: #888; margin-bottom: 40px; }
 
-        /* --- СТОПКА НАСТОЯЩИХ ЧЕКОВ И БАННЕРОВ --- */
+
+
+        /* --- СТОПКА НАСТОЯЩИХ ЧЕКОВ --- */
+
         .receipt-stack {
+
             display: flex; flex-direction: column; align-items: center;
+
             margin-top: 80px; margin-bottom: 100px;
+
         }
 
-        /* Умная система наложения: чеки и баннеры накладываются друг на друга */
-        .poem-receipt, .banner { margin-top: 0; transition: all 0.4s ease; }
-        .poem-receipt + .poem-receipt { margin-top: -120px; }
-        .poem-receipt + .banner, .banner + .poem-receipt, .banner + .banner { margin-top: -40px; }
 
-        /* ПРИ НАВЕДЕНИИ НА СТОПКУ: всё разъезжается */
-        .receipt-stack:hover .poem-receipt,
-        .receipt-stack:hover .banner {
-            margin-top: 30px; transform: rotate(0deg);
-        }
 
         .poem-receipt {
-            background: #fff; width: 320px; padding: 30px 20px; position: relative;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2)); z-index: 1; color: #222;
-            font-family: 'Courier New', Courier, monospace; font-weight: bold;
+
+            background: #fff;
+
+            width: 320px;
+
+            padding: 30px 20px;
+
+            position: relative;
+
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+
+            margin-top: -120px; /* Наложение друг на друга */
+
+            transition: all 0.4s ease;
+
+            z-index: 1;
+
+            color: #222;
+
+            font-family: 'Courier New', Courier, monospace; /* Кассовый шрифт */
+
+            font-weight: bold;
+
         }
 
-        /* Зубчатый край сверху и снизу */
+
+
+        /* Зубчатый край сверху */
+
         .poem-receipt::before {
+
             content: ""; position: absolute; top: -8px; left: 0; right: 0; height: 8px;
+
             background-image: radial-gradient(circle at 5px 0, transparent 6px, #fff 6px);
+
             background-size: 10px 8px; background-repeat: repeat-x;
+
         }
+
+
+
+        /* Зубчатый край снизу */
+
         .poem-receipt::after {
+
             content: ""; position: absolute; bottom: -8px; left: 0; right: 0; height: 8px;
+
             background-image: radial-gradient(circle at 5px 8px, transparent 6px, #fff 6px);
+
             background-size: 10px 8px; background-repeat: repeat-x;
+
         }
+
+
 
         /* Эффект небрежной стопки */
+
         .poem-receipt:nth-child(even) { transform: rotate(3deg); }
+
         .poem-receipt:nth-child(odd) { transform: rotate(-2deg); }
+
         .poem-receipt:nth-child(3n) { transform: rotate(1deg); }
 
-        .receipt-stack:hover .poem-receipt:hover {
-            z-index: 10; transform: scale(1.08) translateY(-10px); filter: drop-shadow(0 15px 30px rgba(0,0,0,0.3));
+
+
+        /* ПРИ НАВЕДЕНИИ: чеки выстраиваются в ряд и вытягиваются */
+
+        .receipt-stack:hover .poem-receipt {
+
+            margin-top: 30px; transform: rotate(0deg);
+
         }
+
+
+
+        /* ПРИ НАВЕДЕНИИ НА КОНКРЕТНЫЙ ЧЕК */
+
+        .receipt-stack:hover .poem-receipt:hover {
+
+            z-index: 10; transform: scale(1.08) translateY(-10px);
+
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.3));
+
+        }
+
+
+
+        /* Внутренности чека */
 
         .receipt-logo { font-size: 1.4rem; margin-bottom: 10px; text-transform: uppercase; text-align: center; }
+
         .receipt-info { text-align: left; font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px; }
+
         .dashed-line { border-bottom: 2px dashed #222; margin: 15px 0; }
-        .poem-receipt h3 { font-size: 1.2rem; margin: 0; text-transform: uppercase; text-align: center; }
-        .poem-receipt p.poem-text { font-size: 1rem; text-align: left; white-space: pre-line; margin-top: 15px; }
-        .receipt-total { text-align: right; font-size: 1.1rem; margin-top: 15px; text-transform: uppercase; }
+
         
+
+        .poem-receipt h3 { font-size: 1.2rem; margin: 0; text-transform: uppercase; text-align: center; }
+
+        .poem-receipt p.poem-text { font-size: 1rem; text-align: left; white-space: pre-line; margin-top: 15px; }
+
+        .receipt-total { text-align: right; font-size: 1.1rem; margin-top: 15px; text-transform: uppercase; }
+
+        
+
+        /* Генерация реалистичного штрихкода */
+
         .barcode {
+
             height: 40px; width: 90%; margin: 20px auto 0;
+
             background: repeating-linear-gradient(90deg, #222, #222 2px, transparent 2px, transparent 4px, #222 4px, #222 5px, transparent 5px, transparent 8px, #222 8px, #222 12px, transparent 12px, transparent 14px);
+
         }
 
-        /* --- ВСТРОЕННЫЕ РЕКЛАМНЫЕ БАННЕРЫ --- */
+
+
+        /* --- РЕКЛАМНЫЕ БАННЕРЫ --- */
+
+        .banners-container {
+
+            position: fixed; top: 20%; bottom: 20%; width: 150px;
+
+            display: flex; flex-direction: column; gap: 15px; z-index: 50; pointer-events: none;
+
+        }
+
+        .left-banners { left: 20px; }
+
+        .right-banners { right: 20px; }
+
+
+
         .banner {
-            pointer-events: auto; background: #fff9fa;
-            border: 2px dashed #ffb3c1; border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.2); padding: 10px; box-sizing: border-box;
-            position: relative; animation: popIn 0.5s ease-out; text-align: center;
-            display: flex; flex-direction: column; z-index: 2;
-        }
-        .banner:nth-child(odd) { transform: rotate(-3deg); }
-        .banner:nth-child(even) { transform: rotate(2deg); }
-        .receipt-stack:hover .banner:hover {
-            z-index: 10; transform: scale(1.05) translateY(-5px);
-        }
 
-        /* Разные формы для имитации настоящей рекламы */
-        .banner-landscape { width: 340px; height: 200px; }
-        .banner-square { width: 260px; height: 260px; }
-        .banner-portrait { width: 220px; height: 320px; }
+            pointer-events: auto; width: 100%; background: #fff;
+
+            border: 2px solid #ffb3c1; border-radius: 15px;
+
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.15); padding: 10px; box-sizing: border-box;
+
+            position: relative; animation: popIn 0.5s ease-out; text-align: center;
+
+        }
 
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
-        .banner img { width: 100%; flex-grow: 1; object-fit: cover; border-radius: 8px; margin-bottom: 8px; }
+
+        .banner img { width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
+
         
-        /* Кнопка закрытия (крестик) */
+
         .banner .btn-close {
-            position: absolute; top: -10px; right: -10px; width: 24px; height: 24px;
+
+            position: absolute; top: -5px; right: -5px; width: 24px; height: 24px;
+
             background: #ff4d6d; color: white; border-radius: 50%;
+
             display: flex; align-items: center; justify-content: center;
-            font-size: 14px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 5;
+
+            font-size: 14px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+
         }
-        /* Кнопка информации (три точки) */
-        .banner .btn-info {
-            position: absolute; top: -10px; right: 20px; width: 24px; height: 24px;
-            background: #fff; color: #ff4d6d; border-radius: 50%; border: 1px solid #ff4d6d;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 16px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 5;
-        }
+
         .banner-text { font-family: 'Caveat', cursive; font-size: 1.2rem; color: #ff4d6d; line-height: 1.1; }
 
+
+
         /* --- МОДАЛЬНЫЕ ОКНА --- */
+
         .modal-overlay {
+
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+
             background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px);
+
             display: flex; justify-content: center; align-items: center; z-index: 1000;
+
         }
+
         .modal { background: white; padding: 40px; border-radius: 20px; text-align: center; max-width: 90%; width: 450px; }
+
         .modal h2 { color: #ff4d6d; font-family: 'Caveat', cursive; font-size: 2.5rem; margin-top: 0; }
+
         .modal-buttons { margin-top: 30px; display: flex; justify-content: center; gap: 20px; position: relative; min-height: 50px; }
+
         button { padding: 12px 25px; border: none; border-radius: 50px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1rem; }
+
         .btn-yes { background: #ff4d6d; color: white; }
+
         .btn-no { background: #e0e0e0; color: #666; position: relative; }
 
-        #captchaModal, #rknModal { display: none; }
+
+
+        #captchaModal { display: none; }
+
         .captcha-image-block {
+
             background: #fdf2f4; border: 2px solid #ffb3c1; color: #ff4d6d; font-family: 'Caveat', cursive; font-size: 3rem; padding: 10px 20px;
+
             margin: 20px auto; border-radius: 10px; transform: rotate(-3deg) skew(-5deg); filter: blur(0.5px);
+
         }
+
         .captcha-input { width: 80%; padding: 15px; border: 2px solid #ddd; border-radius: 50px; font-size: 1.1rem; text-align: center; font-family: 'Montserrat', sans-serif; margin-bottom: 20px; outline: none; }
+
         .captcha-input.error { border-color: #e63946; }
+
         .footer { margin-top: 50px; font-family: 'Caveat', cursive; font-size: 2rem; color: #ff4d6d; padding-bottom: 30px;}
+
     </style>
+
 </head>
+
 <body>
 
+
+
     <div class="modal-overlay unselectable" id="customModal">
+
         <div class="modal">
+
             <h2>Куда собралась? 😡</h2>
+
             <p>Этот сайт использует уникальные "куки" от Владика. Тебе нужно официально согласиться с тем, что ты — самая лучшая, красивая и удивительная девушка во всей Вселенной!</p>
+
             <div class="modal-buttons">
+
                 <button class="btn-yes" onclick="acceptTruth()">Я согласна!</button>
+
                 <button class="btn-no" id="btnNo">Вранье</button>
+
             </div>
+
         </div>
+
     </div>
+
+
 
     <div class="modal-overlay unselectable" id="captchaModal">
+
         <div class="modal">
+
             <h2>Проверка безопасности 🔐</h2>
+
             <p>Пожалуйста, подтверди, что ты — <b>самая привлекательная турчанка в мире</b>!</p>
+
             <p>Для входа введи слово с картинки:</p>
+
             <div class="captcha-image-block">целую</div>
+
             <input type="text" class="captcha-input" id="captchaInputField" placeholder="Введи слово сюда...">
+
             <div><button class="btn-yes" onclick="validateCaptcha()">Подтвердить</button></div>
+
         </div>
+
     </div>
 
-    <div class="modal-overlay unselectable" id="rknModal">
-        <div class="modal">
-            <h2>О рекламе ℹ️</h2>
-            <p>Если бы эту рекламу проверил РКН, то они тоже бы узнали, как сильно я тебя люблю ❤️</p>
-            <div class="modal-buttons">
-                <button class="btn-yes" onclick="closeRKN()">Убедили!</button>
-            </div>
-        </div>
-    </div>
+
+
+    <div class="banners-container left-banners unselectable" id="leftBanners"></div>
+
+    <div class="banners-container right-banners unselectable" id="rightBanners"></div>
+
+
 
     <canvas class="hearts-bg" id="hearts"></canvas>
 
+
+
     <div class="container unselectable">
+
         <h1>Моей ошеломительной турчанке</h1>
+
         <div class="subtitle">стихи, что не выразят даже половину того, о чём я бы хотел тебе сказать</div>
 
+
+
         <div class="receipt-stack" id="receiptStack">
+
             
+
             <div class="poem-receipt">
+
                 <div class="receipt-logo">ТУРЕЦКИЙ БАЗАР "ФЕФТЕМЕ"</div>
+
                 <div class="receipt-info">
+
                     Кассир: Владик<br>
+
                     Покупатель: Николь<br>
+
                     Дата: 28.04.2026<br>
+
                     Статус: ОПЛАЧЕНО НАТУРОЙ
+
                 </div>
+
                 <div class="dashed-line"></div>
+
                 <h3>С. Есенин</h3>
+
                 <p class="poem-text">Заметался пожар голубой,
+
                 Позабылись родимые дали.
+
                 В первый раз я запел про любовь,
+
                 В первый раз отрекаюсь скандалить.
 
+
+
                 Мне бы только смотреть на тебя,
+
                 Видеть глаз злато-карий омут,
+
                 И чтоб, прошлое не любя,
+
                 Ты уйти не смогла к другому.</p>
+
                 <div class="dashed-line"></div>
+
                 <div class="receipt-total">ИТОГО: БЕСЦЕННО</div>
+
                 <div class="barcode"></div>
+
             </div>
 
+
+
             <div class="poem-receipt">
+
                 <div class="receipt-logo">МАГАЗИН "WH4T!SLOV3"</div>
+
                 <div class="receipt-info">
+
                     Кассир: Ватизлав<br>
+
                     Покупатель: Кыз<br>
+
                     Дата: 28.04.2026<br>
+
                     Артикул: ВДОХНОВЕНИЕ
+
                 </div>
+
                 <div class="dashed-line"></div>
+
                 <h3>А. Пушкин</h3>
+
                 <p class="poem-text">Я помню чудное мгновенье:
+
                 Передо мной явилась ты,
+
                 Как мимолетное виденье,
+
                 Как гений чистой красоты.</p>
+
                 <div class="dashed-line"></div>
+
                 <div class="receipt-total">ИТОГО: БЕСЦЕННО</div>
+
                 <div class="barcode"></div>
+
             </div>
 
+
+
             <div class="poem-receipt">
+
                 <div class="receipt-logo">МАГАЗИН "ВЕЧНАЯ ЛЮБОВЬ"</div>
+
                 <div class="receipt-info">
+
                     Кассир: Твой лев<br>
+
                     Покупатель: Никуша<br>
+
                     Дата: 28.04.2026
+
                 </div>
+
                 <div class="dashed-line"></div>
+
                 <h3>Э. Асадов</h3>
+
                 <p class="poem-text">Я могу тебя очень ждать,
+
                 Долго-долго и верно-верно,
+
                 И ночами могу не спать
+
                 Год, и два, и всю жизнь, наверно!</p>
+
                 <div class="dashed-line"></div>
+
                 <div class="receipt-total">ИТОГО: НУ КОПЕЕЧКУ СТОИТ</div>
+
                 <div class="barcode"></div>
+
             </div>
 
+
+
             <div class="poem-receipt">
+
                 <div class="receipt-logo">КУНЦЕВО ПЛАЗА</div>
+
                 <div class="receipt-info">
+
                     Кассир: Андреевич<br>
+
                     Покупатель: Мехметовна
+
                 </div>
+
                 <div class="dashed-line"></div>
+
                 <h3>А. Блок</h3>
+
                 <p class="poem-text">О доблестях, о подвигах, о славе
+
                 Я забывал на горестной земле,
+
                 Когда твое лицо в простой оправе
+
                 Передо мной сияло на столе.</p>
+
                 <div class="dashed-line"></div>
+
                 <div class="receipt-total">ИТОГО: FOR3V3R LOV3</div>
+
                 <div class="barcode"></div>
+
             </div>
 
+
+
             <div class="poem-receipt">
+
                 <div class="receipt-logo">БУТИК ООО "тлижу"</div>
+
                 <div class="receipt-info">
+
                     Кассир: Владик <333* <br>
+
                     Покупатель: Ника <3
+
                 </div>
+
                 <div class="dashed-line"></div>
+
                 <h3>А. Фет</h3>
+
                 <p class="poem-text">Не уезжай, — побудь со мной еще,
+
                 Не уезжай, — побудь со мной еще,
+
                 Не уезжай, — побудь со мной еще,
+
                 Твоя улыбка так легка!</p>
+
                 <div class="dashed-line"></div>
+
                 <div class="receipt-total">ИТОГО: МИНИМУМ ПИРОГ</div>
+
                 <div class="barcode"></div>
+
             </div>
+
+
 
         </div>
+
+
 
         <div class="footer">
+
             С любовью, от Владика ❤️
+
         </div>
+
     </div>
 
+
+
     <script>
+
+        // --- ДАННЫЕ С ТОЧНЫМИ ИМЕНАМИ ФАЙЛОВ КАК У ТЕБЯ ---
+
         const adsData = [
+
             { img: 'img/2026-04-28 14.49.17.jpg', text: 'внимание: эта женщина украла моё сердце!' },
+
             { img: 'img/2026-04-28 14.49.22.jpg', text: 'какой fabric 💅' },
+
             { img: 'img/2026-04-28 14.49.26.jpg', text: 'ТЫ ТАКАЯ УЮТНАЯ 🧣' },
+
             { img: 'img/2026-04-28 14.49.29.jpg', text: 'ЦЕЛОВАЛ БЫ В 4 ГУБЫ ЕЁ' },
+
             { img: 'img/2026-04-28 14.49.33.jpg', text: 'НЕ ИДЕАЛЬНА ЛИ ОНА? 💖' },
+
             { img: 'img/2026-04-28 14.49.37.jpg', text: 'да, она диктатор. мой. 🥰' },
+
             { img: 'img/2026-04-28 14.49.41.jpg', text: 'с - значит секси 😍' },
+
             { img: 'img/2026-04-28 14.49.44.jpg', text: 'ПОЕДЬ СО МНОЙ В ПИТЕР И НА КРАЙ СВЕТА' },
+
             { img: 'img/2026-04-28 14.49.51.jpg', text: 'Моя чурка, любимая!' }
+
         ];
 
-        // --- ЛОГИКА БАННЕРОВ (ВСТРАИВАЕМ В СТОПКУ) ---
-        function createBanner() {
-            const stack = document.getElementById('receiptStack');
-            const items = stack.children;
-            if (items.length === 0) return;
 
-            // Выбираем случайное место между существующими чеками/баннерами
-            const targetIndex = Math.floor(Math.random() * items.length);
-            const targetItem = items[targetIndex];
+
+        // --- ЛОГИКА БАННЕРОВ ---
+
+        function createBanner(side) {
+
+            const container = document.getElementById(side === 'left' ? 'leftBanners' : 'rightBanners');
+
+            if (container.children.length > 4) return;
+
+
 
             const ad = adsData[Math.floor(Math.random() * adsData.length)];
-            const shapes = ['banner-landscape', 'banner-square', 'banner-portrait'];
-            const shapeClass = shapes[Math.floor(Math.random() * shapes.length)];
 
             const banner = document.createElement('div');
-            banner.className = `banner ${shapeClass} unselectable`;
+
+            banner.className = 'banner';
+
             
+
+            // Если картинка не найдена, она покажет текст ошибки
+
             banner.innerHTML = `
+
                 <div class="btn-close" onclick="multiplyBanners(this)">x</div>
-                <div class="btn-info" onclick="showRKN()">⋮</div>
+
                 <img src="${ad.img}" alt="Ошибка загрузки фото!" onerror="this.style.display='none'; this.nextElementSibling.innerHTML += '<br><b>(Фото не найдено в img/)</b>';">
+
                 <div class="banner-text">${ad.text}</div>
+
             `;
-            
-            // Вставляем сразу после случайного элемента
-            targetItem.parentNode.insertBefore(banner, targetItem.nextSibling);
+
+            container.appendChild(banner);
+
         }
 
-        // Размножение баннеров при нажатии на крестик
+
+
         function multiplyBanners(btn) {
+
             const banner = btn.closest('.banner');
+
+            const containerId = banner.parentElement.id;
+
+            const side = containerId === 'leftBanners' ? 'left' : 'right';
+
+            
+
             banner.remove();
-            // Вставляем два новых в случайные места
-            setTimeout(() => createBanner(), 100);
-            setTimeout(() => createBanner(), 300);
+
+            setTimeout(() => createBanner(side), 100);
+
+            setTimeout(() => createBanner(side === 'left' ? 'right' : 'left'), 300);
+
         }
 
-        // --- ЛОГИКА МОДАЛЬНОГО ОКНА РКН ---
-        function showRKN() {
-            document.getElementById('rknModal').style.display = 'flex';
-        }
-        function closeRKN() {
-            document.getElementById('rknModal').style.display = 'none';
-        }
+
 
         // --- ЛОГИКА УБЕГАЮЩЕЙ КНОПКИ ---
+
         const btnNo = document.getElementById('btnNo');
+
         const moveButton = (e) => {
+
             e.preventDefault();
+
             const x = Math.random() * (window.innerWidth - btnNo.offsetWidth - 20);
+
             const y = Math.random() * (window.innerHeight - btnNo.offsetHeight - 20);
+
             btnNo.style.position = 'fixed';
+
             btnNo.style.left = `${Math.max(10, x)}px`;
+
             btnNo.style.top = `${Math.max(10, y)}px`;
+
         };
+
         btnNo.addEventListener('mouseover', moveButton);
+
         btnNo.addEventListener('touchstart', moveButton);
 
+
+
         // --- МОДАЛЬНЫЕ ОКНА И КАПЧА ---
+
         function acceptTruth() {
+
             document.getElementById('customModal').style.display = 'none';
+
             setTimeout(() => { document.getElementById('captchaModal').style.display = 'flex'; }, 5000);
+
         }
+
+
 
         function validateCaptcha() {
+
             const inputField = document.getElementById('captchaInputField');
+
             const userValue = inputField.value.trim().toLowerCase();
+
             if (userValue === 'целую') {
+
                 document.getElementById('captchaModal').style.display = 'none';
-                // Вызываем 2 баннера для начала
-                setTimeout(() => createBanner(), 1000);
-                setTimeout(() => createBanner(), 2500);
+
+                // Запускаем баннеры после правильного слова
+
+                setTimeout(() => createBanner('left'), 1000);
+
+                setTimeout(() => createBanner('right'), 2500);
+
             } else {
+
                 inputField.classList.add('error');
+
                 inputField.value = '';
+
                 setTimeout(() => inputField.classList.remove('error'), 500);
+
             }
+
         }
+
         document.getElementById('captchaInputField').addEventListener('keypress', function (e) {
+
             if (e.key === 'Enter') validateCaptcha();
+
         });
 
+
+
         // --- АНИМАЦИЯ СЕРДЕЧЕК ---
+
         const canvas = document.getElementById('hearts');
+
         const ctx = canvas.getContext('2d');
+
         let heartsArr = [];
+
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+
         window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 
+
+
         class Heart {
+
             constructor() {
+
                 this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+
                 this.size = Math.random() * 15 + 5; this.speedY = Math.random() * 1 + 0.5;
+
                 this.speedX = (Math.random() - 0.5) * 0.5; this.opacity = Math.random() * 0.5 + 0.2;
+
             }
+
             update() {
+
                 this.y += this.speedY; this.x += this.speedX;
+
                 if (this.y > canvas.height) { this.y = 0 - this.size; this.x = Math.random() * canvas.width; }
+
             }
+
             draw() {
+
                 ctx.globalAlpha = this.opacity; ctx.fillStyle = '#ffb3c1'; ctx.beginPath();
+
                 const topCurveHeight = this.size * 0.3; ctx.moveTo(this.x, this.y + topCurveHeight);
+
                 ctx.bezierCurveTo(this.x, this.y, this.x - this.size / 2, this.y, this.x - this.size / 2, this.y + topCurveHeight);
+
                 ctx.bezierCurveTo(this.x - this.size / 2, this.y + (this.size + topCurveHeight) / 2, this.x, this.y + (this.size + topCurveHeight) / 2, this.x, this.y + this.size);
+
                 ctx.bezierCurveTo(this.x, this.y + (this.size + topCurveHeight) / 2, this.x + this.size / 2, this.y + (this.size + topCurveHeight) / 2, this.x + this.size / 2, this.y + topCurveHeight);
+
                 ctx.bezierCurveTo(this.x + this.size / 2, this.y, this.x, this.y, this.x, this.y + topCurveHeight); ctx.closePath(); ctx.fill();
+
             }
+
         }
+
         function initHearts() { heartsArr = []; for (let i = 0; i < 50; i++) heartsArr.push(new Heart()); }
+
         function animateHearts() {
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
             for (let i = 0; i < heartsArr.length; i++) { heartsArr[i].update(); heartsArr[i].draw(); }
+
             requestAnimationFrame(animateHearts);
+
         }
+
         initHearts(); animateHearts();
+
     </script>
+
 </body>
+
 </html>
+
