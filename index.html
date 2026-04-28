@@ -102,16 +102,31 @@
             background: repeating-linear-gradient(90deg, #222, #222 2px, transparent 2px, transparent 4px, #222 4px, #222 5px, transparent 5px, transparent 8px, #222 8px, #222 12px, transparent 12px, transparent 14px);
         }
 
-        /* --- НОВАЯ ЛОГИКА БАННЕРОВ --- */
+        /* --- ИСПРАВЛЕННАЯ ЛОГИКА БАННЕРОВ --- */
         .banner {
             pointer-events: auto; background: #fff;
             border: 2px dashed #ffb3c1; border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.2); padding: 10px; box-sizing: border-box;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.2); 
+            padding: 10px; box-sizing: border-box;
             position: relative; animation: popIn 0.5s ease-out; text-align: center;
             display: flex; flex-direction: column; z-index: 50;
+            /* Убрана фиксированная высота, теперь она auto по умолчанию */
+            height: auto !important; 
         }
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
-        .banner img { width: 100%; flex-grow: 1; object-fit: cover; border-radius: 10px; margin-bottom: 8px; pointer-events: none; }
+        
+        /* Фотография идеально вписывается и сохраняет пропорцию */
+        .banner img { 
+            width: 100% !important; 
+            /* Фиксируем пропорцию фото, чтобы оно не искажалось и занимало предсказуемое место */
+            aspect-ratio: 4 / 3; 
+            object-fit: cover; 
+            border-radius: 10px; 
+            margin-bottom: 8px; 
+            pointer-events: none; 
+            /* Убрана фиксированная высота, зависит от aspect-ratio и ширины */
+            height: auto !important; 
+        }
         
         /* Кнопки на баннерах */
         .banner .btn-close {
@@ -124,20 +139,35 @@
             position: absolute; top: -10px; right: 25px; width: 28px; height: 28px;
             background: white; color: #ff4d6d; border: 2px solid #ff4d6d; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 18px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 5;
+            /* Исправлено отображение точек: горизонтально в ряд */
+            font-size: 20px; font-weight: 900; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 5;
+            letter-spacing: -2px; /* Сближаем точки */
+            padding-bottom: 4px; /* Корректируем центр */
+            font-family: Arial, sans-serif;
         }
-        .banner-text { font-family: 'Caveat', cursive; font-size: 1.2rem; color: #ff4d6d; line-height: 1.1; pointer-events: none; }
+        
+        /* Текст занимает столько места, сколько нужно, не перекрываясь */
+        .banner-text { 
+            font-family: 'Caveat', cursive; font-size: 1.2rem; color: #ff4d6d; 
+            line-height: 1.1; pointer-events: none; 
+            /* Дополнительный отступ, чтобы кнопкам не мешать */
+            margin-top: 5px;
+        }
 
-        /* Форматы для десктопа */
+        /* Форматы для десктопа (уменьшены пропорционально) */
         .desktop-banner { position: fixed; }
-        .banner-landscape { width: 340px; height: 200px; }
-        .banner-square { width: 260px; height: 260px; }
-        .banner-portrait { width: 220px; height: 320px; }
+        /* Чеки шириной 320px. Делаем баннеры сопоставимыми или меньше. */
+        .banner-landscape { width: 300px; } /* Было 340 */
+        .banner-square { width: 240px; } /* Было 260 */
+        .banner-portrait { width: 200px; } /* Было 220 */
 
-        /* Формат для мобилки (в стопке) */
+        /* Формат для мобилки (в стопке, пропорционально меньше) */
         .mobile-banner {
-            width: 90%; max-width: 340px; height: 180px; /* Строго горизонтальный */
-            margin-top: -60px; /* Наложение в стопке */
+            width: 85%; /* Было 90% */
+            max-width: 300px; /* Было 340px */
+            /* На мобильном наложение сильнее, т.к. баннеры меньше */
+            margin-top: -80px; 
             transition: all 0.4s ease; z-index: 2;
         }
         .mobile-banner:nth-child(odd) { transform: rotate(-2deg); }
@@ -332,7 +362,7 @@
             
             banner.innerHTML = `
                 <div class="btn-close" onclick="multiplyBanners(this)">x</div>
-                <div class="btn-info" onclick="showRKN()">⋮</div>
+                <div class="btn-info" onclick="showRKN()">...</div>
                 <img src="${ad.img}" alt="Ошибка загрузки фото!" onerror="this.style.display='none'; this.nextElementSibling.innerHTML += '<br><b>(Фото не найдено)</b>';">
                 <div class="banner-text">${ad.text}</div>
             `;
@@ -356,7 +386,8 @@
                 banner.className = `banner desktop-banner ${shapeClass} unselectable`;
                 
                 // Случайная позиция по всему экрану
-                const maxX = window.innerWidth - 350;
+                // Отступы заменены в соответствии с новыми уменьшенными размерами
+                const maxX = window.innerWidth - 320;
                 const maxY = window.innerHeight - 350;
                 banner.style.left = Math.max(10, Math.random() * maxX) + 'px';
                 banner.style.top = Math.max(10, Math.random() * maxY) + 'px';
