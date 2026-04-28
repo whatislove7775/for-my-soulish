@@ -69,18 +69,20 @@
             background-size: 10px 8px; background-repeat: repeat-x;
         }
 
-        /* Эффект небрежной стопки */
+        /* Эффект небрежной стопки (чеки) */
         .poem-receipt:nth-child(even) { transform: rotate(3deg); }
         .poem-receipt:nth-child(odd) { transform: rotate(-2deg); }
         .poem-receipt:nth-child(3n) { transform: rotate(1deg); }
 
-        /* ПРИ НАВЕДЕНИИ: чеки выстраиваются в ряд и вытягиваются */
-        .receipt-stack:hover .poem-receipt {
+        /* ПРИ НАВЕДЕНИИ: чеки и баннеры выстраиваются в ряд и вытягиваются */
+        .receipt-stack:hover .poem-receipt,
+        .receipt-stack:hover .mobile-banner {
             margin-top: 30px; transform: rotate(0deg);
         }
 
         /* ПРИ НАВЕДЕНИИ НА КОНКРЕТНЫЙ ЧЕК */
-        .receipt-stack:hover .poem-receipt:hover {
+        .receipt-stack:hover .poem-receipt:hover,
+        .receipt-stack:hover .mobile-banner:hover {
             z-index: 10; transform: scale(1.08) translateY(-10px);
             filter: drop-shadow(0 15px 30px rgba(0,0,0,0.3));
         }
@@ -100,30 +102,46 @@
             background: repeating-linear-gradient(90deg, #222, #222 2px, transparent 2px, transparent 4px, #222 4px, #222 5px, transparent 5px, transparent 8px, #222 8px, #222 12px, transparent 12px, transparent 14px);
         }
 
-        /* --- РЕКЛАМНЫЕ БАННЕРЫ --- */
-        .banners-container {
-            position: fixed; top: 20%; bottom: 20%; width: 150px;
-            display: flex; flex-direction: column; gap: 15px; z-index: 50; pointer-events: none;
-        }
-        .left-banners { left: 20px; }
-        .right-banners { right: 20px; }
-
+        /* --- НОВАЯ ЛОГИКА БАННЕРОВ --- */
         .banner {
-            pointer-events: auto; width: 100%; background: #fff;
-            border: 2px solid #ffb3c1; border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.15); padding: 10px; box-sizing: border-box;
+            pointer-events: auto; background: #fff;
+            border: 2px dashed #ffb3c1; border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.2); padding: 10px; box-sizing: border-box;
             position: relative; animation: popIn 0.5s ease-out; text-align: center;
+            display: flex; flex-direction: column; z-index: 50;
         }
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
-        .banner img { width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
+        .banner img { width: 100%; flex-grow: 1; object-fit: cover; border-radius: 10px; margin-bottom: 8px; pointer-events: none; }
         
+        /* Кнопки на баннерах */
         .banner .btn-close {
-            position: absolute; top: -5px; right: -5px; width: 24px; height: 24px;
+            position: absolute; top: -10px; right: -10px; width: 28px; height: 28px;
             background: #ff4d6d; color: white; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 14px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-size: 16px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 5;
         }
-        .banner-text { font-family: 'Caveat', cursive; font-size: 1.2rem; color: #ff4d6d; line-height: 1.1; }
+        .banner .btn-info {
+            position: absolute; top: -10px; right: 25px; width: 28px; height: 28px;
+            background: white; color: #ff4d6d; border: 2px solid #ff4d6d; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 5;
+        }
+        .banner-text { font-family: 'Caveat', cursive; font-size: 1.2rem; color: #ff4d6d; line-height: 1.1; pointer-events: none; }
+
+        /* Форматы для десктопа */
+        .desktop-banner { position: fixed; }
+        .banner-landscape { width: 340px; height: 200px; }
+        .banner-square { width: 260px; height: 260px; }
+        .banner-portrait { width: 220px; height: 320px; }
+
+        /* Формат для мобилки (в стопке) */
+        .mobile-banner {
+            width: 90%; max-width: 340px; height: 180px; /* Строго горизонтальный */
+            margin-top: -60px; /* Наложение в стопке */
+            transition: all 0.4s ease; z-index: 2;
+        }
+        .mobile-banner:nth-child(odd) { transform: rotate(-2deg); }
+        .mobile-banner:nth-child(even) { transform: rotate(3deg); }
 
         /* --- МОДАЛЬНЫЕ ОКНА --- */
         .modal-overlay {
@@ -133,12 +151,13 @@
         }
         .modal { background: white; padding: 40px; border-radius: 20px; text-align: center; max-width: 90%; width: 450px; }
         .modal h2 { color: #ff4d6d; font-family: 'Caveat', cursive; font-size: 2.5rem; margin-top: 0; }
+        .modal p { font-size: 1.1rem; line-height: 1.4; margin: 15px 0; }
         .modal-buttons { margin-top: 30px; display: flex; justify-content: center; gap: 20px; position: relative; min-height: 50px; }
         button { padding: 12px 25px; border: none; border-radius: 50px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1rem; }
         .btn-yes { background: #ff4d6d; color: white; }
         .btn-no { background: #e0e0e0; color: #666; position: relative; }
 
-        #captchaModal { display: none; }
+        #captchaModal, #rknModal { display: none; }
         .captcha-image-block {
             background: #fdf2f4; border: 2px solid #ffb3c1; color: #ff4d6d; font-family: 'Caveat', cursive; font-size: 3rem; padding: 10px 20px;
             margin: 20px auto; border-radius: 10px; transform: rotate(-3deg) skew(-5deg); filter: blur(0.5px);
@@ -172,8 +191,15 @@
         </div>
     </div>
 
-    <div class="banners-container left-banners unselectable" id="leftBanners"></div>
-    <div class="banners-container right-banners unselectable" id="rightBanners"></div>
+    <div class="modal-overlay unselectable" id="rknModal">
+        <div class="modal">
+            <h2>Информация о рекламе ℹ️</h2>
+            <p>Если бы эту рекламу проверил РКН, то они тоже бы узнали, как сильно я тебя люблю ❤️</p>
+            <div class="modal-buttons">
+                <button class="btn-yes" onclick="closeRKN()">Закрыть</button>
+            </div>
+        </div>
+    </div>
 
     <canvas class="hearts-bg" id="hearts"></canvas>
 
@@ -286,7 +312,6 @@
     </div>
 
     <script>
-        // --- ДАННЫЕ С ТОЧНЫМИ ИМЕНАМИ ФАЙЛОВ КАК У ТЕБЯ ---
         const adsData = [
             { img: 'img/2026-04-28 14.49.17.jpg', text: 'внимание: эта женщина украла моё сердце!' },
             { img: 'img/2026-04-28 14.49.22.jpg', text: 'какой fabric 💅' },
@@ -299,48 +324,108 @@
             { img: 'img/2026-04-28 14.49.51.jpg', text: 'Моя чурка, любимая!' }
         ];
 
-        // --- ЛОГИКА БАННЕРОВ ---
-        function createBanner(side) {
-            const container = document.getElementById(side === 'left' ? 'leftBanners' : 'rightBanners');
-            if (container.children.length > 4) return;
-
+        // --- ЛОГИКА СОЗДАНИЯ БАННЕРОВ ---
+        function createBanner() {
+            const isMobile = window.innerWidth <= 768; // Проверка на мобилку
             const ad = adsData[Math.floor(Math.random() * adsData.length)];
             const banner = document.createElement('div');
-            banner.className = 'banner';
             
-            // Если картинка не найдена, она покажет текст ошибки
             banner.innerHTML = `
                 <div class="btn-close" onclick="multiplyBanners(this)">x</div>
-                <img src="${ad.img}" alt="Ошибка загрузки фото!" onerror="this.style.display='none'; this.nextElementSibling.innerHTML += '<br><b>(Фото не найдено в img/)</b>';">
+                <div class="btn-info" onclick="showRKN()">⋮</div>
+                <img src="${ad.img}" alt="Ошибка загрузки фото!" onerror="this.style.display='none'; this.nextElementSibling.innerHTML += '<br><b>(Фото не найдено)</b>';">
                 <div class="banner-text">${ad.text}</div>
             `;
-            container.appendChild(banner);
+
+            if (isMobile) {
+                // Мобильный вариант (строго в стопке)
+                banner.className = 'banner mobile-banner unselectable';
+                const stack = document.getElementById('receiptStack');
+                const items = stack.children;
+                if (items.length > 0) {
+                    const targetIndex = Math.floor(Math.random() * items.length);
+                    const targetItem = items[targetIndex];
+                    stack.insertBefore(banner, targetItem.nextSibling); // Вставляем между чеками
+                } else {
+                    stack.appendChild(banner);
+                }
+            } else {
+                // Компьютерный вариант (хаотично и перетаскиваемые)
+                const shapes = ['banner-landscape', 'banner-square', 'banner-portrait'];
+                const shapeClass = shapes[Math.floor(Math.random() * shapes.length)];
+                banner.className = `banner desktop-banner ${shapeClass} unselectable`;
+                
+                // Случайная позиция по всему экрану
+                const maxX = window.innerWidth - 350;
+                const maxY = window.innerHeight - 350;
+                banner.style.left = Math.max(10, Math.random() * maxX) + 'px';
+                banner.style.top = Math.max(10, Math.random() * maxY) + 'px';
+                
+                document.body.appendChild(banner);
+                makeDraggable(banner); // Делаем перетаскиваемым
+            }
         }
 
+        // Логика размножения баннеров
         function multiplyBanners(btn) {
             const banner = btn.closest('.banner');
-            const containerId = banner.parentElement.id;
-            const side = containerId === 'leftBanners' ? 'left' : 'right';
-            
-            banner.remove();
-            setTimeout(() => createBanner(side), 100);
-            setTimeout(() => createBanner(side === 'left' ? 'right' : 'left'), 300);
+            banner.remove(); // Закрываем
+            // Открываем два новых
+            setTimeout(() => createBanner(), 100);
+            setTimeout(() => createBanner(), 300);
         }
 
-        // --- ЛОГИКА УБЕГАЮЩЕЙ КНОПКИ ---
+        // Логика перетаскивания (только для ПК)
+        function makeDraggable(elmnt) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            elmnt.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                // Игнорируем нажатие, если кликнули по крестику или точкам
+                if(e.target.className === 'btn-close' || e.target.className === 'btn-info') return;
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+                
+                // Выдвигаем баннер на передний план при захвате
+                const allBanners = document.querySelectorAll('.desktop-banner');
+                allBanners.forEach(b => b.style.zIndex = 50);
+                elmnt.style.zIndex = 100;
+            }
+
+            function elementDrag(e) {
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+
+        // --- ЛОГИКА ОКОН ---
+        function showRKN() { document.getElementById('rknModal').style.display = 'flex'; }
+        function closeRKN() { document.getElementById('rknModal').style.display = 'none'; }
+
+        // Убегающая кнопка
         const btnNo = document.getElementById('btnNo');
         const moveButton = (e) => {
             e.preventDefault();
             const x = Math.random() * (window.innerWidth - btnNo.offsetWidth - 20);
             const y = Math.random() * (window.innerHeight - btnNo.offsetHeight - 20);
-            btnNo.style.position = 'fixed';
-            btnNo.style.left = `${Math.max(10, x)}px`;
-            btnNo.style.top = `${Math.max(10, y)}px`;
+            btnNo.style.position = 'fixed'; btnNo.style.left = `${Math.max(10, x)}px`; btnNo.style.top = `${Math.max(10, y)}px`;
         };
         btnNo.addEventListener('mouseover', moveButton);
         btnNo.addEventListener('touchstart', moveButton);
 
-        // --- МОДАЛЬНЫЕ ОКНА И КАПЧА ---
         function acceptTruth() {
             document.getElementById('customModal').style.display = 'none';
             setTimeout(() => { document.getElementById('captchaModal').style.display = 'flex'; }, 5000);
@@ -351,9 +436,8 @@
             const userValue = inputField.value.trim().toLowerCase();
             if (userValue === 'целую') {
                 document.getElementById('captchaModal').style.display = 'none';
-                // Запускаем баннеры после правильного слова
-                setTimeout(() => createBanner('left'), 1000);
-                setTimeout(() => createBanner('right'), 2500);
+                setTimeout(() => createBanner(), 1000);
+                setTimeout(() => createBanner(), 2500);
             } else {
                 inputField.classList.add('error');
                 inputField.value = '';
