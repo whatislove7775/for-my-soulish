@@ -35,34 +35,35 @@
         h1 { font-family: 'Caveat', cursive; font-size: 3.5rem; color: #ff4d6d; margin-bottom: 10px; }
         .subtitle { font-size: 1.2rem; color: #888; margin-bottom: 40px; }
 
-        /* --- СТОПКА НАСТОЯЩИХ ЧЕКОВ --- */
+        /* --- СТОПКА НАСТОЯЩИХ ЧЕКОВ И БАННЕРОВ --- */
         .receipt-stack {
             display: flex; flex-direction: column; align-items: center;
             margin-top: 80px; margin-bottom: 100px;
         }
 
-        .poem-receipt {
-            background: #fff;
-            width: 320px;
-            padding: 30px 20px;
-            position: relative;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
-            margin-top: -120px; /* Наложение друг на друга */
-            transition: all 0.4s ease;
-            z-index: 1;
-            color: #222;
-            font-family: 'Courier New', Courier, monospace; /* Кассовый шрифт */
-            font-weight: bold;
+        /* Умная система наложения: чеки и баннеры накладываются друг на друга */
+        .poem-receipt, .banner { margin-top: 0; transition: all 0.4s ease; }
+        .poem-receipt + .poem-receipt { margin-top: -120px; }
+        .poem-receipt + .banner, .banner + .poem-receipt, .banner + .banner { margin-top: -40px; }
+
+        /* ПРИ НАВЕДЕНИИ НА СТОПКУ: всё разъезжается */
+        .receipt-stack:hover .poem-receipt,
+        .receipt-stack:hover .banner {
+            margin-top: 30px; transform: rotate(0deg);
         }
 
-        /* Зубчатый край сверху */
+        .poem-receipt {
+            background: #fff; width: 320px; padding: 30px 20px; position: relative;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2)); z-index: 1; color: #222;
+            font-family: 'Courier New', Courier, monospace; font-weight: bold;
+        }
+
+        /* Зубчатый край сверху и снизу */
         .poem-receipt::before {
             content: ""; position: absolute; top: -8px; left: 0; right: 0; height: 8px;
             background-image: radial-gradient(circle at 5px 0, transparent 6px, #fff 6px);
             background-size: 10px 8px; background-repeat: repeat-x;
         }
-
-        /* Зубчатый край снизу */
         .poem-receipt::after {
             content: ""; position: absolute; bottom: -8px; left: 0; right: 0; height: 8px;
             background-image: radial-gradient(circle at 5px 8px, transparent 6px, #fff 6px);
@@ -74,54 +75,57 @@
         .poem-receipt:nth-child(odd) { transform: rotate(-2deg); }
         .poem-receipt:nth-child(3n) { transform: rotate(1deg); }
 
-        /* ПРИ НАВЕДЕНИИ: чеки выстраиваются в ряд и вытягиваются */
-        .receipt-stack:hover .poem-receipt {
-            margin-top: 30px; transform: rotate(0deg);
-        }
-
-        /* ПРИ НАВЕДЕНИИ НА КОНКРЕТНЫЙ ЧЕК */
         .receipt-stack:hover .poem-receipt:hover {
-            z-index: 10; transform: scale(1.08) translateY(-10px);
-            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.3));
+            z-index: 10; transform: scale(1.08) translateY(-10px); filter: drop-shadow(0 15px 30px rgba(0,0,0,0.3));
         }
 
-        /* Внутренности чека */
         .receipt-logo { font-size: 1.4rem; margin-bottom: 10px; text-transform: uppercase; text-align: center; }
         .receipt-info { text-align: left; font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px; }
         .dashed-line { border-bottom: 2px dashed #222; margin: 15px 0; }
-        
         .poem-receipt h3 { font-size: 1.2rem; margin: 0; text-transform: uppercase; text-align: center; }
         .poem-receipt p.poem-text { font-size: 1rem; text-align: left; white-space: pre-line; margin-top: 15px; }
         .receipt-total { text-align: right; font-size: 1.1rem; margin-top: 15px; text-transform: uppercase; }
         
-        /* Генерация реалистичного штрихкода */
         .barcode {
             height: 40px; width: 90%; margin: 20px auto 0;
             background: repeating-linear-gradient(90deg, #222, #222 2px, transparent 2px, transparent 4px, #222 4px, #222 5px, transparent 5px, transparent 8px, #222 8px, #222 12px, transparent 12px, transparent 14px);
         }
 
-        /* --- РЕКЛАМНЫЕ БАННЕРЫ --- */
-        .banners-container {
-            position: fixed; top: 20%; bottom: 20%; width: 150px;
-            display: flex; flex-direction: column; gap: 15px; z-index: 50; pointer-events: none;
-        }
-        .left-banners { left: 20px; }
-        .right-banners { right: 20px; }
-
+        /* --- ВСТРОЕННЫЕ РЕКЛАМНЫЕ БАННЕРЫ --- */
         .banner {
-            pointer-events: auto; width: 100%; background: #fff;
-            border: 2px solid #ffb3c1; border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.15); padding: 10px; box-sizing: border-box;
+            pointer-events: auto; background: #fff9fa;
+            border: 2px dashed #ffb3c1; border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.2); padding: 10px; box-sizing: border-box;
             position: relative; animation: popIn 0.5s ease-out; text-align: center;
+            display: flex; flex-direction: column; z-index: 2;
         }
+        .banner:nth-child(odd) { transform: rotate(-3deg); }
+        .banner:nth-child(even) { transform: rotate(2deg); }
+        .receipt-stack:hover .banner:hover {
+            z-index: 10; transform: scale(1.05) translateY(-5px);
+        }
+
+        /* Разные формы для имитации настоящей рекламы */
+        .banner-landscape { width: 340px; height: 200px; }
+        .banner-square { width: 260px; height: 260px; }
+        .banner-portrait { width: 220px; height: 320px; }
+
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
-        .banner img { width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-bottom: 8px; }
+        .banner img { width: 100%; flex-grow: 1; object-fit: cover; border-radius: 8px; margin-bottom: 8px; }
         
+        /* Кнопка закрытия (крестик) */
         .banner .btn-close {
-            position: absolute; top: -5px; right: -5px; width: 24px; height: 24px;
+            position: absolute; top: -10px; right: -10px; width: 24px; height: 24px;
             background: #ff4d6d; color: white; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 14px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-size: 14px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 5;
+        }
+        /* Кнопка информации (три точки) */
+        .banner .btn-info {
+            position: absolute; top: -10px; right: 20px; width: 24px; height: 24px;
+            background: #fff; color: #ff4d6d; border-radius: 50%; border: 1px solid #ff4d6d;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 5;
         }
         .banner-text { font-family: 'Caveat', cursive; font-size: 1.2rem; color: #ff4d6d; line-height: 1.1; }
 
@@ -138,7 +142,7 @@
         .btn-yes { background: #ff4d6d; color: white; }
         .btn-no { background: #e0e0e0; color: #666; position: relative; }
 
-        #captchaModal { display: none; }
+        #captchaModal, #rknModal { display: none; }
         .captcha-image-block {
             background: #fdf2f4; border: 2px solid #ffb3c1; color: #ff4d6d; font-family: 'Caveat', cursive; font-size: 3rem; padding: 10px 20px;
             margin: 20px auto; border-radius: 10px; transform: rotate(-3deg) skew(-5deg); filter: blur(0.5px);
@@ -172,8 +176,15 @@
         </div>
     </div>
 
-    <div class="banners-container left-banners unselectable" id="leftBanners"></div>
-    <div class="banners-container right-banners unselectable" id="rightBanners"></div>
+    <div class="modal-overlay unselectable" id="rknModal">
+        <div class="modal">
+            <h2>О рекламе ℹ️</h2>
+            <p>Если бы эту рекламу проверил РКН, то они тоже бы узнали, как сильно я тебя люблю ❤️</p>
+            <div class="modal-buttons">
+                <button class="btn-yes" onclick="closeRKN()">Убедили!</button>
+            </div>
+        </div>
+    </div>
 
     <canvas class="hearts-bg" id="hearts"></canvas>
 
@@ -286,7 +297,6 @@
     </div>
 
     <script>
-        // --- ДАННЫЕ С ТОЧНЫМИ ИМЕНАМИ ФАЙЛОВ КАК У ТЕБЯ ---
         const adsData = [
             { img: 'img/2026-04-28 14.49.17.jpg', text: 'внимание: эта женщина украла моё сердце!' },
             { img: 'img/2026-04-28 14.49.22.jpg', text: 'какой fabric 💅' },
@@ -299,32 +309,49 @@
             { img: 'img/2026-04-28 14.49.51.jpg', text: 'Моя чурка, любимая!' }
         ];
 
-        // --- ЛОГИКА БАННЕРОВ ---
-        function createBanner(side) {
-            const container = document.getElementById(side === 'left' ? 'leftBanners' : 'rightBanners');
-            if (container.children.length > 4) return;
+        // --- ЛОГИКА БАННЕРОВ (ВСТРАИВАЕМ В СТОПКУ) ---
+        function createBanner() {
+            const stack = document.getElementById('receiptStack');
+            const items = stack.children;
+            if (items.length === 0) return;
+
+            // Выбираем случайное место между существующими чеками/баннерами
+            const targetIndex = Math.floor(Math.random() * items.length);
+            const targetItem = items[targetIndex];
 
             const ad = adsData[Math.floor(Math.random() * adsData.length)];
+            const shapes = ['banner-landscape', 'banner-square', 'banner-portrait'];
+            const shapeClass = shapes[Math.floor(Math.random() * shapes.length)];
+
             const banner = document.createElement('div');
-            banner.className = 'banner';
+            banner.className = `banner ${shapeClass} unselectable`;
             
-            // Если картинка не найдена, она покажет текст ошибки
             banner.innerHTML = `
                 <div class="btn-close" onclick="multiplyBanners(this)">x</div>
+                <div class="btn-info" onclick="showRKN()">⋮</div>
                 <img src="${ad.img}" alt="Ошибка загрузки фото!" onerror="this.style.display='none'; this.nextElementSibling.innerHTML += '<br><b>(Фото не найдено в img/)</b>';">
                 <div class="banner-text">${ad.text}</div>
             `;
-            container.appendChild(banner);
+            
+            // Вставляем сразу после случайного элемента
+            targetItem.parentNode.insertBefore(banner, targetItem.nextSibling);
         }
 
+        // Размножение баннеров при нажатии на крестик
         function multiplyBanners(btn) {
             const banner = btn.closest('.banner');
-            const containerId = banner.parentElement.id;
-            const side = containerId === 'leftBanners' ? 'left' : 'right';
-            
             banner.remove();
-            setTimeout(() => createBanner(side), 100);
-            setTimeout(() => createBanner(side === 'left' ? 'right' : 'left'), 300);
+            // Вставляем два новых в случайные места
+            setTimeout(() => createBanner(), 100);
+            setTimeout(() => createBanner(), 300);
+        }
+
+        // --- ЛОГИКА МОДАЛЬНОГО ОКНА РКН ---
+        function showRKN() {
+            document.getElementById('rknModal').style.display = 'flex';
+        }
+        function closeRKN() {
+            document.getElementById('rknModal').style.display = 'none';
         }
 
         // --- ЛОГИКА УБЕГАЮЩЕЙ КНОПКИ ---
@@ -351,9 +378,9 @@
             const userValue = inputField.value.trim().toLowerCase();
             if (userValue === 'целую') {
                 document.getElementById('captchaModal').style.display = 'none';
-                // Запускаем баннеры после правильного слова
-                setTimeout(() => createBanner('left'), 1000);
-                setTimeout(() => createBanner('right'), 2500);
+                // Вызываем 2 баннера для начала
+                setTimeout(() => createBanner(), 1000);
+                setTimeout(() => createBanner(), 2500);
             } else {
                 inputField.classList.add('error');
                 inputField.value = '';
