@@ -8,9 +8,9 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Montserrat:wght@300;400;600&display=swap');
 
-        /* ЖЕЛЕЗОБЕТОННЫЙ КУРСОР */
+        /* ЖЕЛЕЗОБЕТОННЫЙ КУРСОР - БАКЛАЖАН */
         html, body, *, button, a, div, input {
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Ctext y='26' font-size='26'%3E%F0%9F%90%BE%3C/text%3E%3C/svg%3E") 16 16, auto !important;
+            cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32'><text y='26' font-size='26'>🍆</text></svg>") 16 16, auto !important;
         }
 
         body {
@@ -47,7 +47,7 @@
             font-family: 'Courier New', Courier, monospace; font-weight: bold;
             margin-top: -120px; transition: all 0.4s ease;
         }
-        
+
         .receipt-stack .poem-receipt:first-child { margin-top: 0; }
 
         /* Мобильные баннеры в стопке */
@@ -360,21 +360,30 @@
             { img: 'img/2026-04-28 14.49.51.jpg', text: 'Моя чурка, любимая!' }
         ];
 
-        // Логика создания баннеров (разделено четко для ПК и мобилок)
-        function createBanner() {
+        // ИЗМЕНЕНИЕ 3: Передаем картинку, которую нужно исключить (чтобы не дублировалась)
+        function createBanner(excludeImgSrc = null) {
             const isMobile = window.innerWidth <= 768;
-            const ad = adsData[Math.floor(Math.random() * adsData.length)];
+            
+            // Фильтруем картинки, исключая ту, которая только что была закрыта
+            let availableAds = adsData;
+            if (excludeImgSrc) {
+                availableAds = adsData.filter(ad => ad.img !== excludeImgSrc);
+                // Защита, если вдруг отфильтровалось вообще всё
+                if (availableAds.length === 0) availableAds = adsData; 
+            }
+            
+            const ad = availableAds[Math.floor(Math.random() * availableAds.length)];
             const banner = document.createElement('div');
             
+            // ИЗМЕНЕНИЕ 2 (часть 1): Пробрасываем event
             banner.innerHTML = `
-                <div class="btn-close" onclick="multiplyBanners(this)">x</div>
-                <div class="btn-info" onclick="showRKN()">...</div>
+                <div class="btn-close" onclick="multiplyBanners(this, event)">x</div>
+                <div class="btn-info" onclick="showRKN(event)">...</div>
                 <img src="${ad.img}" alt="Ошибка загрузки!" onerror="this.style.display='none'; this.nextElementSibling.innerHTML += '<br><b>(Фото не найдено)</b>';">
                 <div class="banner-text">${ad.text}</div>
             `;
 
             if (isMobile) {
-                // Строго горизонтальные (landscape) между чеками в стопке
                 banner.className = 'banner mobile-banner banner-landscape unselectable';
                 const stack = document.getElementById('receiptStack');
                 const receipts = stack.querySelectorAll('.poem-receipt, .mobile-banner');
@@ -386,7 +395,6 @@
                     stack.appendChild(banner);
                 }
             } else {
-                // ПК версия: хаос по всему экрану, разные формы, можно таскать
                 const shapes = ['banner-landscape', 'banner-square', 'banner-portrait'];
                 const shapeClass = shapes[Math.floor(Math.random() * shapes.length)];
                 banner.className = `banner desktop-banner ${shapeClass} unselectable`;
@@ -402,14 +410,26 @@
             }
         }
 
-        function multiplyBanners(btn) {
+        // ИЗМЕНЕНИЕ 2 (часть 2): Жестко блокируем всплытие клика
+        function multiplyBanners(btn, event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation(); // Это не даст сработать функции перетаскивания!
+            }
+            
             const banner = btn.closest('.banner');
+            
+            // Находим картинку закрываемого баннера
+            const imgElement = banner.querySelector('img');
+            const currentImgSrc = imgElement ? imgElement.getAttribute('src') : null;
+            
             banner.remove();
-            setTimeout(() => createBanner(), 100);
-            setTimeout(() => createBanner(), 300);
+            
+            // Передаем закрытую картинку, чтобы она не появилась в новых баннерах
+            setTimeout(() => createBanner(currentImgSrc), 100);
+            setTimeout(() => createBanner(currentImgSrc), 300);
         }
 
-        // Логика перетаскивания (только ПК)
         function makeDraggable(elmnt) {
             let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
             elmnt.onmousedown = dragMouseDown;
@@ -432,7 +452,10 @@
             function closeDragElement() { document.onmouseup = null; document.onmousemove = null; }
         }
 
-        function showRKN() { document.getElementById('rknModal').style.display = 'flex'; }
+        function showRKN(event) { 
+            if(event) { event.preventDefault(); event.stopPropagation(); }
+            document.getElementById('rknModal').style.display = 'flex'; 
+        }
         function closeRKN() { document.getElementById('rknModal').style.display = 'none'; }
 
         const btnNo = document.getElementById('btnNo');
@@ -448,7 +471,6 @@
         function acceptTruth() {
             document.getElementById('customModal').style.display = 'none';
             
-            // СРАЗУ ПОСЛЕ ПРИНЯТИЯ КУКИ ВЫЛЕТАЕТ 3 БАННЕРА
             createBanner();
             createBanner();
             createBanner();
@@ -461,7 +483,6 @@
             const userValue = inputField.value.trim().toLowerCase();
             if (userValue === 'целую') {
                 document.getElementById('captchaModal').style.display = 'none';
-                // После капчи добавляем еще парочку для эффекта
                 setTimeout(() => createBanner(), 1000);
             } else {
                 inputField.classList.add('error');
@@ -473,7 +494,6 @@
             if (e.key === 'Enter') validateCaptcha();
         });
 
-        // --- АНИМАЦИЯ СЕРДЕЧЕК ---
         const canvas = document.getElementById('hearts');
         const ctx = canvas.getContext('2d');
         let heartsArr = [];
