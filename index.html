@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Для Николь ❤️</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Montserrat:wght@300;400;600&display=swap');
 
@@ -14,6 +15,18 @@
             font-family: 'Montserrat', sans-serif;
             color: #4a4a4a;
             overflow-x: hidden;
+            /* Кастомный курсор в виде лапки кошки (Base64) */
+            cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAKeSURBVHgB7VdLaxNRGP3NpJm0SVuaNjV9aJuqraAV3YguXAhuxYVbEb+ALvyELny4daGLgguLoigVLFYpLhQUbUuSpsmmzbwyyfSceW/m3plMMp2EovPhzMydmW+++e45544gFArZIKK8wY4T25i5m/Z89z/4Y98b4Y8X+R2O53sHicH8f1A+f5V07f9S5vjK+S8B9G8B9G8B9G8B9G8BNMsrL/yA582fC67v3pY6uXh5/8wM8F8C6N8CdK/Y4WwF4fAnY3LxzM5wLMC+V55079R4U3GqY4TDr7Hj6Sj/f46/7yM/ZcZk+88FMDu7w8p/q6Qp+1A6yI75/6/w3V9YQ2a0Uf44SjM4pZlZ3A6zM8hI4FpA98S76OonpL4pXN3Hjs/iYm5Xid0Y9M7Y4SgM645Xm7nF8wL6w/D7MvLbeG575M3x9XwQ/y7634f19bY99R7X0fH4HOr9Fubf974WwI853s+w46kY/P64wS7fU4CqO56Lwfd3WJ7vUj6vO95pZ5Z5X8AofY+86v6pBvDxfG9Xw/j7VfC8i/M1v9wMvV8H34/R9yP0fR0/P5Iat77eU7p605h9M8h6V8L/P35fRn6f96L/m5zG6eB7I88LoGve9Vb6C3Y4X459737A4+q+3H/M8XGfTjLwK5pBv+z5Wp578K/T59N8L+357v/Z/eF4D33v4Dk+7scZ+AXf3/m0t/2pXwugfwugfwugfwugfwvA//T/E0A/DqB/C6B/C6B/C6B/C8A8B4mX930mNshhG6Eby6O48mYpS3D28bX9T9L3U1w7A4f647Y/5w73D6U7P8fU5YQfE9m/5fGfH/8FUMZf416Tft4X8NOfpP8H+AOLQ6f0v+pX1N96GvwvAAAAAElFTkSuQmCC') 16 16, auto;
+        }
+
+        /* Запрещаем выделение текста в блоках */
+        .unselectable {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .hearts-bg {
@@ -90,7 +103,7 @@
             font-style: italic;
         }
 
-        /* Modal Overlay */
+        /* Modal Overlays */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -112,7 +125,7 @@
             text-align: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.2);
             max-width: 90%;
-            width: 400px;
+            width: 450px;
         }
 
         .modal h2 {
@@ -120,6 +133,11 @@
             font-family: 'Caveat', cursive;
             font-size: 2.5rem;
             margin-top: 0;
+        }
+
+        .modal p {
+            font-size: 1.1rem;
+            line-height: 1.4;
         }
 
         .modal-buttons {
@@ -137,7 +155,7 @@
             border-radius: 50px;
             font-family: 'Montserrat', sans-serif;
             font-weight: 600;
-            cursor: pointer;
+            cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAKeSURBVHgB7VdLaxNRGP3NpJm0SVuaNjV9aJuqraAV3YguXAhuxYVbEb+ALvyELny4daGLgguLoigVLFYpLhQUbUuSpsmmzbwyyfSceW/m3plMMp2EovPhzMydmW+++e45544gFArZIKK8wY4T25i5m/Z89z/4Y98b4Y8X+R2O53sHicH8f1A+f5V07f9S5vjK+S8B9G8B9G8B9G8B9G8BNMsrL/yA582fC67v3pY6uXh5/8wM8F8C6N8CdK/Y4WwF4fAnY3LxzM5wLMC+V55079R4U3GqY4TDr7Hj6Sj/f46/7yM/ZcZk+88FMDu7w8p/q6Qp+1A6yI75/6/w3V9YQ2a0Uf44SjM4pZlZ3A6zM8hI4FpA98S76OonpL4pXN3Hjs/iYm5Xid0Y9M7Y4SgM645Xm7nF8wL6w/D7MvLbeG575M3x9XwQ/y7634f19bY99R7X0fH4HOr9Fubf974WwI853s+w46kY/P64wS7fU4CqO56Lwfd3WJ7vUj6vO95pZ5Z5X8AofY+86v6pBvDxfG9Xw/j7VfC8i/M1v9wMvV8H34/R9yP0fR0/P5Iat77eU7p605h9M8h6V8L/P35fRn6f96L/m5zG6eB7I88LoGve9Vb6C3Y4X459737A4+q+3H/M8XGfTjLwK5pBv+z5Wp578K/T59N8L+357v/Z/eF4D33v4Dk+7scZ+AXf3/m0t/2pXwugfwugfwugfwugfwvA//T/E0A/DqB/C6B/C6B/C6B/C8A8B4mX930mNshhG6Eby6O48mYpS3D28bX9T9L3U1w7A4f647Y/5w73D6U7P8fU5YQfE9m/5fGfH/8FUMZf416Tft4X8NOfpP8H+AOLQ6f0v+pX1N96GvwvAAAAAElFTkSuQmCC') 16 16, pointer;
             font-size: 1rem;
             transition: all 0.2s;
         }
@@ -159,6 +177,54 @@
             position: relative;
         }
 
+        /* Captcha Styles */
+        #captchaModal {
+            display: none; /* Скрыто по умолчанию */
+        }
+
+        .captcha-image-block {
+            background: #fdf2f4;
+            border: 2px solid #ffb3c1;
+            color: #ff4d6d;
+            font-family: 'Caveat', cursive;
+            font-size: 3rem;
+            padding: 10px 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            width: fit-content;
+            transform: rotate(-3deg) skew(-5deg); /* Эффект искажения капчи */
+            letter-spacing: 2px;
+            filter: blur(0.5px); /* Легкое размытие */
+        }
+
+        .captcha-input {
+            width: 80%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 20px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .captcha-input:focus {
+            border-color: #ff4d6d;
+        }
+
+        .captcha-input.error {
+            border-color: #e63946;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
         .footer {
             margin-top: 50px;
             font-family: 'Caveat', cursive;
@@ -170,10 +236,10 @@
 </head>
 <body>
 
-    <div class="modal-overlay" id="customModal">
+    <div class="modal-overlay unselectable" id="customModal">
         <div class="modal">
             <h2>Минуточку! 🛑</h2>
-            <p>Этот сайт использует файлы "куки", но вместо их принятия тебе нужно официально согласиться с тем, что ты — самая лучшая, красивая и удивительная девушка во всей Вселенной!</p>
+            <p>Этот сайт использует уникальные "куки" от Владика. Тебе нужно официально согласиться с тем, что ты — самая лучшая, красивая и удивительная девушка во всей Вселенной!</p>
             <div class="modal-buttons">
                 <button class="btn-yes" onclick="acceptTruth()">Я согласна!</button>
                 <button class="btn-no" id="btnNo">Вранье</button>
@@ -181,16 +247,34 @@
         </div>
     </div>
 
+    <div class="modal-overlay unselectable" id="captchaModal">
+        <div class="modal">
+            <h2>Проверка безопасности 🔐</h2>
+            <p>Система должна убедиться, что ты та, за кого себя выдаешь.</p>
+            <p>Пожалуйста, подтверди, что ты — <b>самая привлекательная турчанка в мире</b>!</p>
+            <p>Для входа введи слово с картинки:</p>
+            
+            <div class="captcha-image-block">целую</div>
+            
+            <input type="text" class="captcha-input" id="captchaInputField" placeholder="Введи слово сюда...">
+            
+            <div>
+                <button class="btn-yes" onclick="validateCaptcha()">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+
     <canvas class="hearts-bg" id="hearts"></canvas>
 
-    <div class="container">
+    <div class="container unselectable">
         <h1>Для моей любимой Николь</h1>
         <div class="subtitle">Сайт, созданный специально для тебя</div>
 
         <div class="compliments">
             <p>❤️ <b>Николь</b>, твоя улыбка делает этот мир светлее.</p>
             <p>✨ Ты самая умная, невероятная и потрясающая.</p>
-            <p>🌸 Рядом с тобой каждый день похож на праздник.</p>
+            <p>🌸 Твой смех — моя любимая мелодия.</p>
+            <p>🇹🇷 Ты — настоящая жемчужина, самая-самая!</p>
             <p>Спасибо, что ты есть у меня!</p>
         </div>
 
@@ -201,11 +285,6 @@
             В первый раз я запел про любовь,
             В первый раз отрекаюсь скандалить.
 
-            Был я весь — как запущенный сад,
-            Был на женщин и зелие падкий.
-            Разонравилось пить и плясать
-            И терять свою жизнь без оглядки.
-            
             Мне бы только смотреть на тебя,
             Видеть глаз злато-карий омут,
             И чтоб, прошлое не любя,
@@ -225,26 +304,13 @@
             И снились милые черты.</p>
         </div>
 
-        <div class="poem-card">
-            <h3>Эдуард Асадов</h3>
-            <p>Я могу тебя очень ждать,
-            Долго-долго и верно-верно,
-            И ночами могу не спать
-            Год, и два, и всю жизнь, наверно!
-
-            Пусть листочки календаря
-            Облетят, как листва у сада,
-            Только знать бы, что все не зря,
-            Что тебе это вправду надо!</p>
-        </div>
-
         <div class="footer">
             С любовью, от Владика ❤️
         </div>
     </div>
 
     <script>
-        // Логика убегающей кнопки
+        // --- ЛОГИКА УБЕГАЮЩЕЙ КНОПКИ ---
         const btnNo = document.getElementById('btnNo');
         
         const moveButton = (e) => {
@@ -257,16 +323,49 @@
             btnNo.style.top = `${Math.max(10, y)}px`;
         };
 
-        // Работает и на наведение мышкой, и на попытку тапнуть с телефона
         btnNo.addEventListener('mouseover', moveButton);
         btnNo.addEventListener('touchstart', moveButton);
 
-        // Закрытие модального окна
+        // --- ЛОГИКА МОДАЛЬНЫХ ОКОН ---
         function acceptTruth() {
+            // Закрываем первое окно
             document.getElementById('customModal').style.display = 'none';
+            
+            // Запускаем таймер на 5 секунд для появления капчи
+            setTimeout(showCaptcha, 5000);
         }
 
-        // Анимация падающих сердечек на фоне
+        function showCaptcha() {
+            document.getElementById('captchaModal').style.display = 'flex';
+        }
+
+        function validateCaptcha() {
+            const inputField = document.getElementById('captchaInputField');
+            const userValue = inputField.value.trim().toLowerCase(); // Убираем пробелы и приводим к нижнему регистру
+            const correctValue = 'целую';
+
+            if (userValue === correctValue) {
+                // Если правильно: закрываем капчу
+                document.getElementById('captchaModal').style.display = 'none';
+            } else {
+                // Если неправильно: трясем поле и очищаем
+                inputField.classList.add('error');
+                inputField.value = '';
+                setTimeout(() => {
+                    inputField.classList.remove('error');
+                }, 500);
+            }
+        }
+
+        // Позволяем нажимать Enter в поле ввода капчи
+        document.getElementById('captchaInputField').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                validateCaptcha();
+            }
+        });
+
+
+        // --- АНИМАЦИЯ ПАДАЮЩИХ СЕРДЕЧЕК НА ФОНЕ ---
         const canvas = document.getElementById('hearts');
         const ctx = canvas.getContext('2d');
         let heartsArr = [];
@@ -312,6 +411,7 @@
         }
 
         function initHearts() {
+            heartsArr = [];
             for (let i = 0; i < 50; i++) {
                 heartsArr.push(new Heart());
             }
