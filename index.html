@@ -47,11 +47,16 @@
             font-family: 'Courier New', Courier, monospace; font-weight: bold;
             margin-top: -120px; transition: all 0.4s ease;
         }
-        
+
         .receipt-stack .poem-receipt:first-child { margin-top: 0; }
 
-        /* Мобильные баннеры в стопке */
-        .mobile-banner { margin-top: -50px; z-index: 2; transition: all 0.4s ease; }
+        /* Класс для чеков, которые мы вытащили из стопки (перетаскиваемые) */
+        .poem-receipt.dragged {
+            position: fixed !important;
+            margin: 0 !important;
+            transform: none !important;
+            transition: none !important;
+        }
 
         /* Зубчатый край сверху и снизу */
         .poem-receipt::before {
@@ -65,16 +70,18 @@
             background-size: 10px 8px; background-repeat: repeat-x;
         }
 
-        .poem-receipt:nth-child(even) { transform: rotate(3deg); }
-        .poem-receipt:nth-child(odd) { transform: rotate(-2deg); }
-        .poem-receipt:nth-child(3n) { transform: rotate(1deg); }
-        .mobile-banner:nth-child(odd) { transform: rotate(-2deg); }
-        .mobile-banner:nth-child(even) { transform: rotate(3deg); }
+        /* Эффект небрежной стопки */
+        .poem-receipt:not(.dragged):nth-child(even) { transform: rotate(3deg); }
+        .poem-receipt:not(.dragged):nth-child(odd) { transform: rotate(-2deg); }
+        .poem-receipt:not(.dragged):nth-child(3n) { transform: rotate(1deg); }
 
-        .receipt-stack:hover .poem-receipt,
-        .receipt-stack:hover .mobile-banner { margin-top: 30px; transform: rotate(0deg); }
+        /* ПРИ НАВЕДЕНИИ: всё разъезжается (только для тех, что остались в стопке) */
+        .receipt-stack:hover .poem-receipt:not(.dragged),
+        .receipt-stack:hover .mobile-banner {
+            margin-top: 30px; transform: rotate(0deg);
+        }
 
-        .receipt-stack:hover .poem-receipt:hover,
+        .receipt-stack:hover .poem-receipt:not(.dragged):hover,
         .receipt-stack:hover .mobile-banner:hover {
             z-index: 10; transform: scale(1.08) translateY(-10px); filter: drop-shadow(0 15px 30px rgba(0,0,0,0.3));
         }
@@ -99,7 +106,7 @@
             padding: 12px; box-sizing: border-box;
             position: relative; animation: popIn 0.5s ease-out; text-align: center;
             display: flex; flex-direction: column; z-index: 50;
-            height: max-content !important; /* Сам растягивается под текст */
+            height: max-content !important; 
         }
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
         
@@ -108,7 +115,6 @@
             object-fit: cover; border-radius: 10px; margin-bottom: 10px; pointer-events: none; 
         }
 
-        /* Жесткие пропорции картинок для разных видов баннеров */
         .banner-landscape img { aspect-ratio: 16 / 9; }
         .banner-square img { aspect-ratio: 1 / 1; }
         .banner-portrait img { aspect-ratio: 3 / 4; }
@@ -116,19 +122,19 @@
         /* КРЕСТИК И ТРИ ТОЧКИ (Идеальные круги) */
         .banner .btn-close {
             position: absolute; top: -10px; right: -10px; 
-            width: 30px; height: 30px; /* Квадрат = Идеальный круг */
+            width: 30px; height: 30px; 
             background: #ff4d6d; color: white; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 16px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 5;
         }
         .banner .btn-info {
-            position: absolute; top: -10px; right: 28px; /* Четко слева от крестика */
-            width: 30px; height: 30px; /* Копия крестика */
+            position: absolute; top: -10px; right: 28px; 
+            width: 30px; height: 30px; 
             background: white; color: #ff4d6d; border: 2px solid #ff4d6d; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 18px; font-weight: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 5;
             font-family: Arial, sans-serif; letter-spacing: 1px;
-            padding-bottom: 8px; box-sizing: border-box; /* Центруем точки */
+            padding-bottom: 8px; box-sizing: border-box; 
         }
         
         .banner-text { 
@@ -142,8 +148,13 @@
         .desktop-banner.banner-square { width: 250px; }
         .desktop-banner.banner-portrait { width: 210px; }
 
-        /* Формат для мобилки (Только прямоугольные) */
-        .mobile-banner { width: 90%; max-width: 320px; }
+        /* Формат для мобилки (Только прямоугольные в стопке) */
+        .mobile-banner { 
+            width: 90%; max-width: 320px; 
+            margin-top: -60px; z-index: 2; transition: all 0.4s ease;
+        }
+        .mobile-banner:nth-child(odd) { transform: rotate(-2deg); }
+        .mobile-banner:nth-child(even) { transform: rotate(3deg); }
 
         /* --- МОДАЛЬНЫЕ ОКНА --- */
         .modal-overlay {
@@ -255,14 +266,14 @@
             </div>
 
             <div class="poem-receipt">
-                <div class="receipt-logo">ШОППИНГ-ЦЕНТР "БРИЛЛИАНТ""</div>
+                <div class="receipt-logo">МАГАЗИН "СОПЛИ И ПОСУДА"</div>
                 <div class="receipt-info">
-                    Кассир: Твой тигр<br>
-                    Покупатель: Моя тигрица<br>
+                    Кассир: Твой лев<br>
+                    Покупатель: Никуша<br>
                     Дата: 14.02.2026
                 </div>
                 <div class="dashed-line"></div>
-                <h3>***</h3>
+                <h3>ватизлов</h3>
                 <p class="poem-text">Я точно боюсь, я боюсь без конца, 
                 и меня тошнит от себя самого.
                 Я так скоро загнусь, нет, не сопьюсь, 
@@ -284,12 +295,12 @@
                 Перестану, быть может, 
                 я тебе это бояться сказать.</p>
                 <div class="dashed-line"></div>
-                <div class="receipt-total">ИТОГО: ТВОЁ СЕРДЕЧКО</div>
+                <div class="receipt-total">ИТОГО: ЧТОБ ТЕБЕ ВСЁ ОТДАТЬ</div>
                 <div class="barcode"></div>
             </div>
 
             <div class="poem-receipt">
-                <div class="receipt-logo">МАГАЗИН "FOR3V3R YOUR'S"</div>
+                <div class="receipt-logo">МАГАЗИН "ВЕЧНАЯ ЛЮБОВЬ"</div>
                 <div class="receipt-info">
                     Кассир: Твой лев<br>
                     Покупатель: Никуша<br>
@@ -366,21 +377,23 @@
             const ad = adsData[Math.floor(Math.random() * adsData.length)];
             const banner = document.createElement('div');
             
+            // Жестко блокируем клики на кнопках, чтобы они не запускали перетаскивание
             banner.innerHTML = `
-                <div class="btn-close" onclick="multiplyBanners(this)">x</div>
-                <div class="btn-info" onclick="showRKN()">...</div>
+                <div class="btn-close" onclick="multiplyBanners(this, event)">x</div>
+                <div class="btn-info" onclick="showRKN(event)">...</div>
                 <img src="${ad.img}" alt="Ошибка загрузки!" onerror="this.style.display='none'; this.nextElementSibling.innerHTML += '<br><b>(Фото не найдено)</b>';">
                 <div class="banner-text">${ad.text}</div>
             `;
 
             if (isMobile) {
-                // Строго горизонтальные (landscape) между чеками в стопке
+                // Строго прямоугольные (landscape) между чеками в стопке
                 banner.className = 'banner mobile-banner banner-landscape unselectable';
                 const stack = document.getElementById('receiptStack');
-                const receipts = stack.querySelectorAll('.poem-receipt, .mobile-banner');
-                if (receipts.length > 0) {
-                    const targetIndex = Math.floor(Math.random() * receipts.length);
-                    const targetItem = receipts[targetIndex];
+                // Ищем только элементы внутри стопки, чтобы вставить между ними
+                const elementsInStack = stack.querySelectorAll(':scope > div:not(.dragged)');
+                if (elementsInStack.length > 0) {
+                    const targetIndex = Math.floor(Math.random() * elementsInStack.length);
+                    const targetItem = elementsInStack[targetIndex];
                     targetItem.parentNode.insertBefore(banner, targetItem.nextSibling);
                 } else {
                     stack.appendChild(banner);
@@ -402,24 +415,39 @@
             }
         }
 
-        function multiplyBanners(btn) {
+        // ЖЕСТКИЙ ФИКС БАГА С РАЗДВОЕНИЕМ (добавлен stopPropagation)
+        function multiplyBanners(btn, event) {
+            if(event) event.stopPropagation(); // Блокируем любые другие действия при клике на крестик
             const banner = btn.closest('.banner');
             banner.remove();
             setTimeout(() => createBanner(), 100);
             setTimeout(() => createBanner(), 300);
         }
 
-        // Логика перетаскивания (только ПК)
+        // Логика перетаскивания (для ПК баннеров И ЧЕКОВ)
         function makeDraggable(elmnt) {
             let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
             elmnt.onmousedown = dragMouseDown;
             function dragMouseDown(e) {
+                // Игнорируем нажатие по крестику или точкам
                 if(e.target.className === 'btn-close' || e.target.className === 'btn-info') return;
                 e.preventDefault();
+                
+                // Если мы схватили чек, который еще в стопке — "вырываем" его
+                if (elmnt.classList.contains('poem-receipt') && !elmnt.classList.contains('dragged')) {
+                    const rect = elmnt.getBoundingClientRect();
+                    elmnt.classList.add('dragged');
+                    elmnt.style.left = rect.left + 'px';
+                    elmnt.style.top = rect.top + 'px';
+                    document.body.appendChild(elmnt); // Переносим в корень страницы
+                }
+
                 pos3 = e.clientX; pos4 = e.clientY;
                 document.onmouseup = closeDragElement; document.onmousemove = elementDrag;
-                const allBanners = document.querySelectorAll('.desktop-banner');
-                allBanners.forEach(b => b.style.zIndex = 100);
+                
+                // Выводим элемент на самый передний план
+                const allDraggables = document.querySelectorAll('.desktop-banner, .dragged');
+                allDraggables.forEach(b => b.style.zIndex = 100);
                 elmnt.style.zIndex = 150;
             }
             function elementDrag(e) {
@@ -432,7 +460,15 @@
             function closeDragElement() { document.onmouseup = null; document.onmousemove = null; }
         }
 
-        function showRKN() { document.getElementById('rknModal').style.display = 'flex'; }
+        // Применяем перетаскивание ко всем чекам на старте
+        window.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.poem-receipt').forEach(makeDraggable);
+        });
+
+        function showRKN(event) { 
+            if(event) event.stopPropagation(); 
+            document.getElementById('rknModal').style.display = 'flex'; 
+        }
         function closeRKN() { document.getElementById('rknModal').style.display = 'none'; }
 
         const btnNo = document.getElementById('btnNo');
