@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для Николь ❤️</title>
+    <title>Для моей любимой Николь ❤️</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>❤️</text></svg>">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Montserrat:wght@300;400;600&display=swap');
@@ -76,34 +76,117 @@
             margin: 10px 0;
         }
 
-        .poem-card {
+        /* receipt-style for poems */
+        .poem-receipt {
             background: #fff;
-            border-radius: 15px;
+            border: 1px solid #ddd;
+            border-top: 10px solid #f9f9f9;
+            border-bottom: 10px solid #f9f9f9;
             padding: 25px;
             margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            text-align: left;
-            border-left: 5px solid #ff758f;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
             transition: transform 0.3s ease;
         }
 
-        .poem-card:hover {
+        .poem-receipt:hover {
             transform: translateY(-5px);
         }
 
-        .poem-card h3 {
+        .poem-receipt::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: repeating-linear-gradient(90deg, transparent, transparent 5px, rgba(0,0,0,0.1) 5px, rgba(0,0,0,0.1) 10px);
+        }
+
+        .poem-receipt h3 {
             color: #ff4d6d;
             margin-top: 0;
             font-family: 'Caveat', cursive;
-            font-size: 2rem;
+            font-size: 2.5rem;
         }
 
-        .poem-card p {
+        .poem-receipt p {
             white-space: pre-line;
             font-style: italic;
+            font-weight: 300;
         }
 
-        /* Modal Overlays */
+        /* --- РЕКЛАМНЫЕ БАННЕРЫ --- */
+        .banners-container {
+            position: fixed;
+            top: 50%;
+            width: auto;
+            height: auto;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 50;
+        }
+
+        .left-banners { left: 15px; }
+        .right-banners { right: 15px; }
+
+        .banner {
+            width: 150px;
+            height: 150px;
+            background: #fff;
+            border: 2px solid #ffb3c1;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(255, 77, 109, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .banner:hover {
+            transform: scale(1.05);
+        }
+
+        .banner img {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .banner .btn-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .banner-text {
+            font-size: 0.8rem;
+            color: #ff4d6d;
+            margin-top: 5px;
+        }
+
+        /* --- МОДАЛЬНЫЕ ОКНА --- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -177,7 +260,7 @@
             position: relative;
         }
 
-        /* Captcha Styles */
+        /* --- КАПЧА --- */
         #captchaModal {
             display: none; /* Скрыто по умолчанию */
         }
@@ -264,6 +347,21 @@
         </div>
     </div>
 
+    <div class="banners-container left-banners unselectable" id="leftBanners">
+        <div class="banner">
+            <div class="btn-close" onclick="closeBanner(this)">x</div>
+            <img src="data:image/png;base64,..." alt="Для Николь ❤️">
+            <div class="banner-text">Для Николь ❤️</div>
+        </div>
+    </div>
+    <div class="banners-container right-banners unselectable" id="rightBanners">
+        <div class="banner">
+            <div class="btn-close" onclick="closeBanner(this)">x</div>
+            <img src="data:image/png;base64,..." alt="Самая любимая 💖">
+            <div class="banner-text">Самая любимая 💖</div>
+        </div>
+    </div>
+
     <canvas class="hearts-bg" id="hearts"></canvas>
 
     <div class="container unselectable">
@@ -275,12 +373,21 @@
             <p>✨ Ты самая умная, невероятная и потрясающая.</p>
             <p>🌸 Твой смех — моя любимая мелодия.</p>
             <p>🇹🇷 Ты — настоящая жемчужина, самая-самая!</p>
+            <p>💖 Ретро-вайб, но ты — вечная классика!</p>
+            <p>Санкт-Петербург тебе к лицу! 😉</p>
+            <p>Твой стиль OMG! 💅</p>
+            <p>Осторожно! В твоих глазах можно утонуть. 😍</p>
+            <p>Твоя уютная шапка — 🔥! Самая теплая улыбка.</p>
+            <p>Чистая красота. ✨ Удачи во всем!</p>
+            <p> القلب ينبض لك. 💓 (Сердце бьется для тебя)</p>
             <p>Спасибо, что ты есть у меня!</p>
         </div>
 
-        <div class="poem-card">
+        <div class="poem-receipt">
             <h3>Сергей Есенин</h3>
-            <p>Заметался пожар голубой,
+            <p>ЧЕК #001 | СЕРГЕЙ ЕСЕНИН | ДАТА: 1923
+            ----------
+            Заметался пожар голубой,
             Позабылись родимые дали.
             В первый раз я запел про любовь,
             В первый раз отрекаюсь скандалить.
@@ -291,9 +398,11 @@
             Ты уйти не смогла к другому.</p>
         </div>
 
-        <div class="poem-card">
+        <div class="poem-receipt">
             <h3>Александр Пушкин</h3>
-            <p>Я помню чудное мгновенье:
+            <p>ЧЕК #002 | АЛЕКСАНДР ПУШКИН | ДАТА: 1825
+            ----------
+            Я помню чудное мгновенье:
             Передо мной явилась ты,
             Как мимолетное виденье,
             Как гений чистой красоты.
@@ -302,6 +411,157 @@
             В тревогах шумной суеты,
             Звучал мне долго голос нежный
             И снились милые черты.</p>
+        </div>
+
+        <div class="poem-receipt">
+            <h3>Эдуард Асадов</h3>
+            <p>ЧЕК #003 | ЭДУАРД АСАДОВ | ДАТА: 1968
+            ----------
+            Я могу тебя очень ждать,
+            Долго-долго и верно-верно,
+            И ночами могу не спать
+            Год, и два, и всю жизнь, наверно!
+
+            Пусть листочки календаря
+            Облетят, как листва у сада,
+            Только знать бы, что все не зря,
+            Что тебе это вправду надо!</p>
+        </div>
+
+        <div class="poem-receipt">
+            <h3>Михаил Лермонтов</h3>
+            <p>ЧЕК #004 | МИХАИЛ ЛЕРМОНТОВ | ДАТА: 1841
+            ----------
+            И скучно и грустно, и некому руку подать
+            В минуту душевной невзгоды…
+            Желанья!.. что пользы напрасно и вечно желать?..
+            А годы проходят — все лучшие годы!
+
+            Любить… но кого же?.. на время — не стоит труда,
+            А вечно любить невозможно.
+            В себя ли заглянешь? — там прошлого нет и следа:
+            И радость, и муки, и всё там ничтожно…</p>
+        </div>
+
+        <div class="poem-receipt">
+            <h3>Федор Тютчев</h3>
+            <p>ЧЕК #005 | ФЕДОР ТЮТЧЕВ | ДАТА: 1836
+            ----------
+            Я встретил вас — и всё былое
+            В отжившем сердце ожило;
+            Я вспомнил время золотое —
+            И сердцу стало так тепло…
+
+            Как поздней осени порою
+            Бывают дни, бывает час,
+            Когда повеет вдруг весною
+            И что-то встрепенется в нас…</p>
+        </div>
+
+        <div class="poem-receipt">
+            <h3>Афанасий Фет</h3>
+            <p>ЧЕК #006 | АФАНАСИЙ ФЕТ | ДАТА: 1842
+            ----------
+            Я пришел к тебе с приветом,
+            Рассказать, что солнце встало,
+            Что оно горячим светом
+            По листам затрепетало;
+
+            Рассказать, что лес проснулся,
+            Весь проснулся, веткой каждой,
+            Каждой птицей встрепенулся
+            И весенней полон жаждой…</p>
+        </div>
+
+        <div class="poem-receipt">
+            <h3>Александр Блок</h3>
+            <p>ЧЕК #007 | АЛЕКСАНДР БЛОК | ДАТА: 1908
+            ----------
+            О доблестях, о подвигах, о славе
+            Я забывал на горестной земле,
+            Когда твое лицо в простой оправе
+            Передо мной сияло на столе.
+
+            Но час настал, и ты ушла из дому.
+            Я бросил в ночь заветное кольцо.
+            Ты отдала свою судьбу другому,
+            И я забыл прекрасное лицо.</p>
+        </div>
+
+        <div class="poem-receipt">
+            <h3>Анна Ахматова</h3>
+            <p>ЧЕК #008 | АННА АХМАТОВА | ДАТА: 1913
+            ----------
+            Сжала руки под темной вуалью…
+            «Отчего ты сегодня бледна?»
+            — Оттого, что я терпкой печалью
+            Напоила его допьяна.
+
+            Как забуду? Он вышел, шатаясь,
+            Искривился мучительно рот…
+            Я сбежала, перил не касаясь,
+            Я бежала за ним до ворот.</p>
+        </div>
+
+        <div class="poem-receipt">
+            <h3>Марина Цветаева</h3>
+            <p>ЧЕК #009 | МАРИНА ЦВЕТАЕВА | ДАТА: 1915
+            ----------
+            Имя твое — птица в руке,
+            Имя твое — льдинка на языке,
+            Одно единственное движенье губ,
+            Имя твое — пять букв.
+
+            Мячик, пойманный на лету,
+            Серебряный бубенец во рту…</p>
+        </div>
+
+        <div class="poem-receipt">
+            <h3>Борис Пастернак</h3>
+            <p>ЧЕК #010 | БОРИС ПАСТЕРНАК | ДАТА: 1946
+            ----------
+            Быть знаменитым некрасиво.
+            Не это поднимает ввысь.
+            Не надо заводить архива,
+            Над рукописями трястись.
+
+            Цель творчества — самоотдача,
+            А не шумиха, не успех.
+            Позорно, ничего не знача,
+            Быть притчей на устах у всех.</p>
+        </div>
+
+        <div class="poem-receipt">
+            <h3>Владимир Маяковский</h3>
+            <p>ЧЕК #011 | ВЛАДИМИР МАЯКОВСКИЙ | ДАТА: 1913
+            ----------
+            Послушайте!
+            Ведь, если звезды зажигают —
+            значит — это кому-нибудь нужно?
+            Значит — кто-нибудь хочет, чтобы они были?
+            Значит — кто-нибудь называет
+            эти плево́чки
+            жемчужиной?</p>
+        </div>
+
+        <div class="poem-receipt">
+            <h3>Владимир Высоцкий</h3>
+            <p>ЧЕК #012 | ВЛАДИМИР ВЫСОЦКИЙ | ДАТА: 1966
+            ----------
+            Если я заболею, к врачам обращаться не стану,
+            Обращусь я к друзьям (не сочтите, что это в бреду):
+            Постелите мне степь, занавесьте мне окна туманом,
+            В изголовье поставьте ночную звезду.</p>
+        </div>
+
+        <div class="poem-receipt">
+            <h3>Афанасий Фет</h3>
+            <p>ЧЕК #013 | АФАНАСИЙ ФЕТ | ДАТА: 1888
+            ----------
+            Не уезжай, — побудь со мной еще,
+            Не уезжай, — побудь со мной еще,
+            Не уезжай, — побудь со мной еще,
+            Твоя улыбка так легка!</p>
         </div>
 
         <div class="footer">
@@ -363,6 +623,27 @@
                 validateCaptcha();
             }
         });
+
+
+        // --- ЛОГИКА РЕКЛАМНЫХ БАННЕРОВ ---
+        function closeBanner(btn) {
+            const banner = btn.closest('.banner');
+            const container = banner.closest('.banners-container');
+            const newBannersCount = 2; // Сколько баннеров открывается взамен
+
+            for (let i = 0; i < newBannersCount; i++) {
+                const newBanner = document.createElement('div');
+                newBanner.className = 'banner';
+                newBanner.innerHTML = `
+                    <div class="btn-close" onclick="closeBanner(this)">x</div>
+                    <img src="data:image/png;base64,..." alt="Для Николь ❤️">
+                    <div class="banner-text">Для Николь ❤️</div>
+                `;
+                container.appendChild(newBanner);
+            }
+            
+            banner.remove(); // Удаляем старый баннер
+        }
 
 
         // --- АНИМАЦИЯ ПАДАЮЩИХ СЕРДЕЧЕК НА ФОНЕ ---
